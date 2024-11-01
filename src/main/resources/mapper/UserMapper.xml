@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.enjoy_trip.repository.UserRepository">
+
+    <!-- 회원가입 -->
+    <insert id="join" parameterType="com.trip.enjoy_trip.dto.UserDto">
+        INSERT INTO user (login_id, name, email, password, phone, birth, profile_url, created_at, updated_at, one_liner)
+        VALUES (#{loginId}, #{name}, #{email}, #{password}, #{phone}, #{birth}, #{profileUrl}, #{createdAt}, #{updatedAt}, #{oneLiner})
+    </insert>
+</mapper>
