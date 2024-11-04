@@ -5,7 +5,7 @@
 
     <!-- 회원가입 -->
     <insert id="join" parameterType="com.trip.enjoy_trip.dto.UserDto">
-        INSERT INTO user (login_id, name, email, password, phone, birth, profile_url, created_at, updated_at, one_liner)
-        VALUES (#{loginId}, #{name}, #{email}, #{password}, #{phone}, #{birth}, #{profileUrl}, #{createdAt}, #{updatedAt}, #{oneLiner})
+        INSERT INTO user (login_id, name, email, password, phone, birth, profile_url,one_liner)
+        VALUES (#{loginId}, #{name}, #{email}, #{password}, #{phone}, #{birth}, #{profileUrl}, #{oneLiner})
     </insert>
 </mapper>
