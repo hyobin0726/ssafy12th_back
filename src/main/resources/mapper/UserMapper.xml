@@ -5,7 +5,12 @@
 
     <!-- 회원가입 -->
     <insert id="join" parameterType="com.trip.enjoy_trip.dto.UserDto">
-        INSERT INTO user (login_id, name, email, password, phone, birth, profile_url, created_at, updated_at, one_liner)
-        VALUES (#{loginId}, #{name}, #{email}, #{password}, #{phone}, #{birth}, #{profileUrl}, #{createdAt}, #{updatedAt}, #{oneLiner})
+        INSERT INTO user (login_id, name, email, password, phone, birth, profile_url,one_liner)
+        VALUES (#{loginId}, #{name}, #{email}, #{password}, #{phone}, #{birth}, #{profileUrl}, #{oneLiner})
     </insert>
+
+    <!-- 아이디 중복 검사 -->
+    <select id="countByLoginId" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM user WHERE login_id = #{loginId}
+    </select>
 </mapper>
