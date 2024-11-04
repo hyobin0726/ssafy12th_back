@@ -28,8 +28,12 @@ public class UserServiceImpl  implements UserService{
 //                .profileUrl(userDto.getProfileUrl())
 //                .oneLiner(userDto.getOneLiner())
 //                .build();
-
-
+//
         userRepository.join(userDto);
+    }
+    @Override
+    public boolean checkLoginId(String loginId){
+        return userRepository.countByLoginId(loginId) > 0;
+
     }
 }

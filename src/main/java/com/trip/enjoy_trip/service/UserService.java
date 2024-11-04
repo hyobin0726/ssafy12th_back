@@ -4,4 +4,5 @@ import com.trip.enjoy_trip.dto.UserDto;
 
 public interface UserService {
     void join(UserDto user);
+    boolean checkLoginId(String loginId);
 }
