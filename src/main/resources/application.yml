@@ -10,6 +10,25 @@ spring:
     username: ssafy
     password: ssafy
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hyobin01726@gmail.com
+    password: fbyj kwpd yrvf czmn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+      data:
+        redis:
+          host: localhost
+          port: 6379
+
 # mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml

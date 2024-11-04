@@ -39,3 +39,4 @@ out/
 ### property files ###
 **/application-local.yml
 application.yml
+application-secret.yml
