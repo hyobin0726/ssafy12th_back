@@ -20,22 +20,22 @@ public class EmailService {
 
     // 인증 코드 생성
     private String createCode() {
-        int leftLimit = 48; // '0'
-        int rightLimit = 122; // 'z'
-        int targetStringLength = 6;
         Random random = new Random();
+        int codeLength = 6; // 원하는 코드 길이 설정
+        StringBuilder code = new StringBuilder();
 
-        return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+        for (int i = 0; i < codeLength; i++) {
+            code.append(random.nextInt(10)); // 0부터 9까지의 숫자 추가
+        }
+
+        return code.toString();
     }
 
     // 이메일 내용 설정 (간단한 텍스트)
     private String setTextContent(String code) {
-        return "안녕하세요.\n\n인증 코드: " + code + "\n\n해당 코드를 입력하여 이메일 인증을 완료해 주세요.";
+        return "안녕하세요 당신과 나와의 이야기 당나기입니다.\n\n인증 코드: " + code + "\n\n해당 코드를 입력하여 이메일 인증을 완료해주세요.";
     }
+
 
     // 이메일 폼 생성
     private MimeMessage createEmailForm(String email) throws MessagingException {
@@ -47,8 +47,8 @@ public class EmailService {
         message.setFrom(senderEmail);
         message.setText(setTextContent(authCode), "utf-8");
 
-        // Redis에 인증 코드 저장 (30분 동안 유효)
-        redisUtil.setDataExpire(email, authCode, 60 * 30L);
+        // Redis에 인증 코드 저장 (3분 동안 유효)
+        redisUtil.setDataExpire(email, authCode, 180L);
 
         return message;
     }
@@ -65,8 +65,14 @@ public class EmailService {
 
     // 코드 검증
     public Boolean verifyEmailCode(String email, String code) {
-        String codeFoundByEmail = redisUtil.getData(email);
-        log.info("code found by email: " + codeFoundByEmail);
-        return codeFoundByEmail != null && codeFoundByEmail.equals(code);
+        String codeFoundByEmail = redisUtil.getData(email);  // Redis에서 인증번호 조회
+        if (codeFoundByEmail != null && codeFoundByEmail.equals(code)) {
+            // 인증 성공 시 Redis에서 해당 인증번호 삭제 (만료 처리)
+            redisUtil.deleteData(email);
+            return true;
+        }
+        return false;
     }
+
+
 }

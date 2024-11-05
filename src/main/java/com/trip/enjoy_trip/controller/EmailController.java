@@ -11,13 +11,13 @@ import jakarta.mail.MessagingException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth/email")
+@RequestMapping("/api/v1/auth")
 public class EmailController {
 
     private final EmailService emailService;
 
     // 인증 코드 전송
-    @PostMapping("/auth")
+    @PostMapping("/email")
     public ResponseEntity<String> sendVerificationCode(@RequestParam String email) {
         try {
             emailService.sendEmail(email);
@@ -28,7 +28,7 @@ public class EmailController {
     }
 
     // 인증 코드 확인
-    @PostMapping("/auth/verify")
+    @PostMapping("/email/verify")
     public ResponseEntity<String> verifyCode(@RequestParam String email, @RequestParam String code) {
         boolean isValid = emailService.verifyEmailCode(email, code);
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.trip.enjoy_trip.mapper.EmailMapper">
+<mapper namespace="com.trip.enjoy_trip.repository.EmailRepository">  <!-- 인터페이스와 동일하게 설정 -->
 
     <!-- 이메일 인증 코드 저장 -->
-    <insert id="insertEmailVerification" parameterType="map">
+    <insert id="insertEmailVerification" parameterType="java.util.Map">
         INSERT INTO email_verification (email, code, created_at)
         VALUES (#{email}, #{code}, NOW())
     </insert>
@@ -14,8 +14,9 @@
         SELECT code
         FROM email_verification
         WHERE email = #{email}
-        AND TIMESTAMPDIFF(MINUTE, created_at, NOW()) <= 30
+        AND created_at >= NOW() - INTERVAL 3 MINUTE
     </select>
+
 
     <!-- 인증 완료된 코드 삭제 -->
     <delete id="deleteCodeByEmail" parameterType="string">
