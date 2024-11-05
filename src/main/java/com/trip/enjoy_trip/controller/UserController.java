@@ -1,7 +1,9 @@
 package com.trip.enjoy_trip.controller;
 
 import com.trip.enjoy_trip.dto.LoginDto;
+import com.trip.enjoy_trip.dto.TokenDto;
 import com.trip.enjoy_trip.dto.UserDto;
+import com.trip.enjoy_trip.security.JwtTokenProvider;
 import com.trip.enjoy_trip.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
@@ -38,23 +41,31 @@ public class UserController {
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginDto loginDto, HttpSession session) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDto loginDto) {
         try {
-            String loginMessage = userService.loginUser(loginDto, session);
-            return ResponseEntity.status(HttpStatus.OK).body(loginMessage);
+            // 로그인 후 JWT 토큰을 발급
+            TokenDto tokenDto = userService.loginUser(loginDto);
+            return ResponseEntity.status(HttpStatus.OK).body(tokenDto);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패: " + e.getMessage());
         }
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpSession session) {
-        if (session.getAttribute("user") != null) {
-            session.invalidate(); // 세션 무효화
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String tokenHeader) {
+        // "Bearer "를 제거하여 순수 토큰 값만 추출
+        String token = tokenHeader.replace("Bearer ", "");
+
+        try {
+            // JWT에서 사용자 ID 또는 loginId를 추출하여 Redis에서 리프레시 토큰 삭제
+            String loginId = jwtTokenProvider.getLoginIdFromToken(token);
+            userService.logout(loginId);
+
             return ResponseEntity.status(HttpStatus.OK).body("로그아웃에 성공하였습니다.");
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body("이미 로그아웃된 상태입니다.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 실패: " + e.getMessage());
         }
     }
+
 
 }

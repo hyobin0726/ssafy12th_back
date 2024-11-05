@@ -1,8 +1,10 @@
 package com.trip.enjoy_trip.service;
 
 import com.trip.enjoy_trip.dto.LoginDto;
+import com.trip.enjoy_trip.dto.TokenDto;
 import com.trip.enjoy_trip.dto.UserDto;
 import com.trip.enjoy_trip.repository.UserRepository;
+import com.trip.enjoy_trip.security.JwtTokenProvider;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl  implements UserService{
     private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService; // JWT 관련 로직을 담당하는 JwtTokenService
+
 //    private final BCryptPasswordEncoder passwordEncoder;
 
 
@@ -38,17 +43,22 @@ public class UserServiceImpl  implements UserService{
     }
 
     @Override
-    public String loginUser(LoginDto loginDto, HttpSession session) {
+    public TokenDto loginUser(LoginDto loginDto) {
         // 로그인 ID로 사용자 정보 조회
-        LoginDto dbuser = userRepository.findByLoginId(loginDto.getLoginId())
+        LoginDto dbUser = userRepository.findByLoginId(loginDto.getLoginId())
                 .orElseThrow(() -> new RuntimeException("가입되지 않은 회원입니다."));
 
-        if (loginDto.getPassword().equals(dbuser.getPassword())) {
-            session.setAttribute("user", dbuser);  // 세션에 사용자 정보 저장
-            return "로그인에 성공하였습니다.";
+        // 비밀번호 일치 확인
+        if (loginDto.getPassword().equals(dbUser.getPassword())) {
+            // JWT 토큰 발급을 JwtTokenService에 위임
+            return jwtTokenService.generateTokens(dbUser.getLoginId());
         } else {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
+    }
+    @Override
+    public void logout(String loginId) {
+        jwtTokenService.deleteRefreshToken(loginId);
     }
 
 }
