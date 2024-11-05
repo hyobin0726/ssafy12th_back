@@ -47,4 +47,15 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
+    // 리뷰 수정
+    @PutMapping("/modify/{reviewId}")
+    public ResponseEntity<String> updateReview(
+            @PathVariable Integer reviewId,
+            @Valid @RequestBody ReviewDto reviewDto) {
+
+        // 리뷰 ID 설정
+        reviewDto.setReviewId(reviewId);
+        reviewService.updateReview(reviewDto);
+        return ResponseEntity.ok("리뷰가 성공적으로 수정되었습니다.");
+    }
 }
