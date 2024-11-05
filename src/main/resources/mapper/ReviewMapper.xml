@@ -21,6 +21,22 @@
         </foreach>
     </insert>
 
+    <!-- 리뷰 수정 -->
+    <update id="updateReview">
+        UPDATE review
+        SET
+        content = #{content},
+        point = #{point},
+        visibility = #{visibility}
+        WHERE review_id = #{reviewId}
+    </update>
+
+    <!-- 리뷰 이미지 수정 -->
+    <delete id="deleteReviewImages">
+        DELETE FROM review_image
+        WHERE review_id = #{reviewId}
+    </delete>
+
     <!-- ResultMap 설정 -->
     <resultMap id="ReviewWithImagesResultMap" type="com.trip.enjoy_trip.dto.ReviewDto">
         <id column="review_id" property="reviewId"/>
