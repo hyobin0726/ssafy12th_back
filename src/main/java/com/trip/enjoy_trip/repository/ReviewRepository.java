@@ -11,4 +11,6 @@ import java.util.List;
 public interface ReviewRepository {
     void insertReview(ReviewDto reviewDto);
     void insertReviewImages(int reviewId, List<String> imageUrls);
+    ReviewDto findById(Integer reviewId);        // 특정 리뷰 조회
+    List<ReviewDto> findAll();                   // 전체 리뷰 목록 조회
 }

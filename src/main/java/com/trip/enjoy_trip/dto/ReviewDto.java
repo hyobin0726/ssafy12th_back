@@ -1,8 +1,6 @@
 package com.trip.enjoy_trip.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +9,8 @@ import jakarta.validation.constraints.NotNull;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReviewDto {
     private Integer reviewId;  // 리뷰 ID
     private String content;    // 리뷰 내용
@@ -26,7 +26,8 @@ public class ReviewDto {
 
     @NotNull(message = "imageUrls 가 없습니다.")
     private List<String> imageUrls; // 첨부 이미지 URL 리스트
-    private String attractionId; // 추가된 필드
-    private int gugunId;        // 추가된 필드
-    private int gugunSidoId;    // 추가된 필드
+    private Integer attractionId; // 추가된 필드 (타입 변경)
+    private Integer gugunId;      // 추가된 필드 (타입 변경)
+    private Integer gugunSidoId;  // 추가된 필드 (타입 변경)
+    private LocalDateTime createdAt;  // 작성 시간 필드 추가
 }

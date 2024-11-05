@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/reviews")  // URL에 맞춰 기본 경로 수정
 public class ReviewController {
@@ -30,4 +32,19 @@ public class ReviewController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 작성에 실패하였습니다.");
 //        }
     }
+
+    // 특정 리뷰 조회 (리뷰 ID로 조회)
+    @GetMapping("/list/{reviewId}")
+    public ResponseEntity<ReviewDto> getReviewById(@PathVariable Integer reviewId) {
+        ReviewDto review = reviewService.getReviewById(reviewId);
+        return ResponseEntity.ok(review);
+    }
+
+    // 전체 리뷰 목록 조회
+    @GetMapping("/list")
+    public ResponseEntity<List<ReviewDto>> getAllReviews() {
+        List<ReviewDto> reviews = reviewService.getAllReviews();
+        return ResponseEntity.ok(reviews);
+    }
+
 }

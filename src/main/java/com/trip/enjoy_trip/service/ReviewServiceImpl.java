@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -29,6 +30,15 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.insertReview(reviewDto);
         // 리뷰 ID를 가져와 리뷰 이미지 추가
         reviewRepository.insertReviewImages(reviewDto.getReviewId(), reviewDto.getImageUrls());
+    }
 
+    @Override
+    public ReviewDto getReviewById(Integer reviewId) {
+        return reviewRepository.findById(reviewId);
+    }
+
+    @Override
+    public List<ReviewDto> getAllReviews() {
+        return reviewRepository.findAll();
     }
 }
