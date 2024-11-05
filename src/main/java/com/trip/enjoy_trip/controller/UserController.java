@@ -46,4 +46,15 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패: " + e.getMessage());
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            session.invalidate(); // 세션 무효화
+            return ResponseEntity.status(HttpStatus.OK).body("로그아웃에 성공하였습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("이미 로그아웃된 상태입니다.");
+        }
+    }
+
 }
