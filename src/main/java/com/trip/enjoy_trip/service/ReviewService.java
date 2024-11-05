@@ -9,4 +9,5 @@ public interface ReviewService {
     ReviewDto getReviewById(Integer reviewId);  // 리뷰 ID로 특정 리뷰 조회
     List<ReviewDto> getAllReviews();           // 전체 리뷰 목록 조회
     void updateReview(ReviewDto reviewDto);    // 리뷰 수정
+    void deleteReview(Integer reviewId);       // 리뷰 삭제
 }

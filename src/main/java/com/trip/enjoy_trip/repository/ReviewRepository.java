@@ -16,4 +16,6 @@ public interface ReviewRepository {
 
     void updateReview(ReviewDto reviewDto);      // 리뷰 수정
     void deleteReviewImages(int reviewId);       // 기존 이미지 삭제
+
+    void deleteReview(Integer reviewId);         // 리뷰 삭제
 }

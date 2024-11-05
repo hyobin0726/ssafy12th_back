@@ -69,4 +69,13 @@ public class ReviewServiceImpl implements ReviewService {
 //        // 리뷰 ID를 가져와 리뷰 이미지 추가
 //        reviewRepository.insertReviewImages(reviewDto.getReviewId(), reviewDto.getImageUrls());
     }
+
+    @Override
+    public void deleteReview(Integer reviewId) {
+        // 리뷰 이미지 삭제
+        reviewRepository.deleteReviewImages(reviewId);
+
+        // 리뷰 삭제
+        reviewRepository.deleteReview(reviewId);
+    }
 }
