@@ -1,7 +1,9 @@
 package com.trip.enjoy_trip.controller;
 
+import com.trip.enjoy_trip.dto.LoginDto;
 import com.trip.enjoy_trip.dto.UserDto;
 import com.trip.enjoy_trip.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,15 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 사용 중인 아이디입니다.");
         } else {
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 아이디입니다.");
+        }
+    }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody LoginDto loginDto, HttpSession session) {
+        try {
+            String loginMessage = userService.loginUser(loginDto, session);
+            return ResponseEntity.status(HttpStatus.OK).body(loginMessage);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패: " + e.getMessage());
         }
     }
 }

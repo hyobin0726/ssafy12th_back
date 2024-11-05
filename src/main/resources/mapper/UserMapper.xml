@@ -13,4 +13,10 @@
     <select id="countByLoginId" parameterType="string" resultType="int">
         SELECT COUNT(*) FROM user WHERE login_id = #{loginId}
     </select>
+    <!-- 로그인 ID로 사용자 조회 -->
+    <select id="findByLoginId" parameterType="string" resultType="com.trip.enjoy_trip.dto.LoginDto">
+        SELECT login_id AS loginId, password
+        FROM user
+        WHERE login_id = #{loginId}
+    </select>
 </mapper>
