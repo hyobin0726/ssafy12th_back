@@ -2,6 +2,7 @@ package com.trip.enjoy_trip.repository;
 
 import com.trip.enjoy_trip.dto.ReviewDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ReviewRepository {
     void deleteReviewImages(int reviewId);       // 기존 이미지 삭제
 
     void deleteReview(Integer reviewId);         // 리뷰 삭제
+
+    void insertLike(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
 }

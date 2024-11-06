@@ -65,4 +65,32 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
         return ResponseEntity.ok("리뷰가 성공적으로 삭제되었습니다.");
     }
+
+    // 좋아요 기능
+    @PostMapping("/love/{reviewId}")
+    public ResponseEntity<String> likeReview(
+            @PathVariable Integer reviewId,
+            @RequestHeader("Authorization") String token) {
+        // 토큰에서 userId 추출
+        Integer userId = extractUserIdFromToken(token);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        reviewService.likeReview(reviewId, userId);
+        return ResponseEntity.ok("리뷰에 좋아요가 성공적으로 등록되었습니다.");
+    }
+
+    // 토큰에서 userId 추출하는 메서드 예시
+    private Integer extractUserIdFromToken(String token) {
+        // 토큰 해석 로직을 여기에 추가 (예: JWT 토큰의 경우 디코딩 및 userId 추출)
+        // 예시로 고정된 userId 반환
+        // 예제: 토큰이 "Bearer abc"라면 userId를 1로 반환
+        if ("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW5zdSIsImlhdCI6MTczMDkyODgxMiwiZXhwIjoxNzMwOTMwNjEyfQ.SkKEJy18mS5S__2jLtLGMzzZtPx3LcqU6azThypSKKg".equals(token)) {
+            return 1;
+        }
+        // 다른 토큰일 경우 null 반환
+        return null;
+    }
 }

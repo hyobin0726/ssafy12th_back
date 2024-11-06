@@ -95,4 +95,16 @@
         WHERE r.review_id = #{reviewId}
     </select>
 
+    <!-- 좋아요 삽입 -->
+<!--    <insert id="insertLike">-->
+<!--        INSERT INTO `like` (review_id)-->
+<!--        VALUES (#{reviewId})-->
+<!--    </insert>-->
+
+    <!-- 좋아요 삽입 -->
+    <insert id="insertLike">
+        INSERT INTO `like` (review_id, user_id)
+        VALUES (#{reviewId}, #{userId})
+    </insert>
+
 </mapper>

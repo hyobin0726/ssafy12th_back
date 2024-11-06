@@ -10,4 +10,5 @@ public interface ReviewService {
     List<ReviewDto> getAllReviews();           // 전체 리뷰 목록 조회
     void updateReview(ReviewDto reviewDto);    // 리뷰 수정
     void deleteReview(Integer reviewId);       // 리뷰 삭제
+    void likeReview(Integer reviewId, Integer userId); //리뷰 좋아요
 }

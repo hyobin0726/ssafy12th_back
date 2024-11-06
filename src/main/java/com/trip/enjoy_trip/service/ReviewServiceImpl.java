@@ -78,4 +78,10 @@ public class ReviewServiceImpl implements ReviewService {
         // 리뷰 삭제
         reviewRepository.deleteReview(reviewId);
     }
+
+    //리뷰 좋아요
+    @Override
+    public void likeReview(Integer reviewId, Integer userId) {
+        reviewRepository.insertLike(reviewId, userId);
+    }
 }
