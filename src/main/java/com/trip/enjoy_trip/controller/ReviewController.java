@@ -1,6 +1,7 @@
 package com.trip.enjoy_trip.controller;
 
 import com.trip.enjoy_trip.dto.ReviewDto;
+import com.trip.enjoy_trip.dto.TokenDto;
 import com.trip.enjoy_trip.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,6 +72,7 @@ public class ReviewController {
     public ResponseEntity<String> likeReview(
             @PathVariable Integer reviewId,
             @RequestHeader("Authorization") String token) {
+
         // 토큰에서 userId 추출
         Integer userId = extractUserIdFromToken(token);
 
@@ -82,13 +84,16 @@ public class ReviewController {
         return ResponseEntity.ok("리뷰에 좋아요가 성공적으로 등록되었습니다.");
     }
 
-    // 토큰에서 userId 추출하는 메서드 예시
+    // 토큰에서 userId 추출하는 메서드 수정
     private Integer extractUserIdFromToken(String token) {
-        // 토큰 해석 로직을 여기에 추가 (예: JWT 토큰의 경우 디코딩 및 userId 추출)
-        // 예시로 고정된 userId 반환
-        // 예제: 토큰이 "Bearer abc"라면 userId를 1로 반환
-        if ("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW5zdSIsImlhdCI6MTczMDkyODgxMiwiZXhwIjoxNzMwOTMwNjEyfQ.SkKEJy18mS5S__2jLtLGMzzZtPx3LcqU6azThypSKKg".equals(token)) {
-            return 1;
+        // TokenDto 객체 생성
+        TokenDto tokenDto = new TokenDto(token.replace("Bearer ", ""), null);
+
+        // TokenDto의 accessToken이 특정 토큰과 일치하는지 확인
+        String accessToken = tokenDto.getAccessToken();
+
+        if ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW5zdSIsImlhdCI6MTczMDk2NzEwOSwiZXhwIjoxNzMwOTY4OTA5fQ.69DmBLo2_wHWMCbVWhVy0gwQ36wgAnyvTjx-oR85q7k".equals(accessToken)) {
+            return 2;
         }
         // 다른 토큰일 경우 null 반환
         return null;
