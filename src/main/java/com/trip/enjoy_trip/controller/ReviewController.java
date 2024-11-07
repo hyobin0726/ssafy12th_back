@@ -23,7 +23,14 @@ public class ReviewController {
     }
 
     @PostMapping("/write")
-    public ResponseEntity<String> createReview(@Valid @RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<String> createReview(@Valid @RequestBody ReviewDto reviewDto, @RequestHeader("Authorization") String token) {
+        // 토큰에서 userId 추출
+        Integer userId = extractUserIdFromToken(token);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
         reviewService.createReview(reviewDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("리뷰가 성공적으로 작성되었습니다.");
 //        try {
@@ -52,7 +59,13 @@ public class ReviewController {
     @PutMapping("/modify/{reviewId}")
     public ResponseEntity<String> updateReview(
             @PathVariable Integer reviewId,
-            @Valid @RequestBody ReviewDto reviewDto) {
+            @Valid @RequestBody ReviewDto reviewDto, @RequestHeader("Authorization") String token) {
+        // 토큰에서 userId 추출
+        Integer userId = extractUserIdFromToken(token);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
 
         // 리뷰 ID 설정
         reviewDto.setReviewId(reviewId);
@@ -62,7 +75,14 @@ public class ReviewController {
 
     //리뷰 삭제
     @DeleteMapping("/remove/{reviewId}")
-    public ResponseEntity<String> deleteReview(@PathVariable Integer reviewId) {
+    public ResponseEntity<String> deleteReview(@PathVariable Integer reviewId, @RequestHeader("Authorization") String token) {
+        // 토큰에서 userId 추출
+        Integer userId = extractUserIdFromToken(token);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
         reviewService.deleteReview(reviewId);
         return ResponseEntity.ok("리뷰가 성공적으로 삭제되었습니다.");
     }
@@ -92,7 +112,7 @@ public class ReviewController {
         // TokenDto의 accessToken이 특정 토큰과 일치하는지 확인
         String accessToken = tokenDto.getAccessToken();
 
-        if ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW5zdSIsImlhdCI6MTczMDk2NzEwOSwiZXhwIjoxNzMwOTY4OTA5fQ.69DmBLo2_wHWMCbVWhVy0gwQ36wgAnyvTjx-oR85q7k".equals(accessToken)) {
+        if ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW5zdSIsImlhdCI6MTczMTAxNzgwNCwiZXhwIjoxNzMxMDE5NjA0fQ.9XM95JzYWjTga6J9tnRE7P19BqtOQEsVPoHjfzu8ljw".equals(accessToken)) {
             return 2;
         }
         // 다른 토큰일 경우 null 반환
