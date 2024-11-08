@@ -30,10 +30,10 @@ public class ReviewController {
 
     @PostMapping("/write")
     public ResponseEntity<String> createReview(@Valid @RequestBody ReviewDto reviewDto, @RequestHeader("Authorization") String token) {
-        // 토큰에서 userId 추출
-        Integer userId = extractUserIdFromToken(token);
 
-        if (userId == null) {
+        String confirmToken = token.replace("Bearer ", "");
+
+        if(!jwtTokenProvider.validateToken(confirmToken)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
@@ -66,10 +66,10 @@ public class ReviewController {
     public ResponseEntity<String> updateReview(
             @PathVariable Integer reviewId,
             @Valid @RequestBody ReviewDto reviewDto, @RequestHeader("Authorization") String token) {
-        // 토큰에서 userId 추출
-        Integer userId = extractUserIdFromToken(token);
 
-        if (userId == null) {
+        String confirmToken = token.replace("Bearer ", "");
+
+        if(!jwtTokenProvider.validateToken(confirmToken)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
@@ -82,10 +82,9 @@ public class ReviewController {
     //리뷰 삭제
     @DeleteMapping("/remove/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable Integer reviewId, @RequestHeader("Authorization") String token) {
-        // 토큰에서 userId 추출
-        Integer userId = extractUserIdFromToken(token);
+        String confirmToken = token.replace("Bearer ", "");
 
-        if (userId == null) {
+        if(!jwtTokenProvider.validateToken(confirmToken)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
@@ -99,12 +98,13 @@ public class ReviewController {
             @PathVariable Integer reviewId,
             @RequestHeader("Authorization") String token) {
 
-        // 토큰에서 userId 추출
-        Integer userId = extractUserIdFromToken(token);
+        String confirmToken = token.replace("Bearer ", "");
 
-        if (userId == null) {
+        if(!jwtTokenProvider.validateToken(confirmToken)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
+        // 토큰에서 userId 추출
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
 
         reviewService.likeReview(reviewId, userId);
         return ResponseEntity.ok("리뷰에 좋아요가 성공적으로 등록되었습니다.");
@@ -123,11 +123,13 @@ public class ReviewController {
             @PathVariable Integer reviewId,
             @RequestHeader("Authorization") String token) {
 
-        Integer userId = extractUserIdFromToken(token);
+        String confirmToken = token.replace("Bearer ", "");
 
-        if (userId == null) {
+        if(!jwtTokenProvider.validateToken(confirmToken)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
+        // 토큰에서 userId 추출
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
 
         boolean isUnliked = reviewService.unlikeReview(reviewId, userId);
         if (isUnliked) {
@@ -135,20 +137,5 @@ public class ReviewController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("좋아요가 등록되지 않았습니다.");
         }
-    }
-
-    // 토큰에서 userId 추출하는 메서드 수정
-    private Integer extractUserIdFromToken(String token) {
-        // TokenDto 객체 생성
-        TokenDto tokenDto = new TokenDto(token.replace("Bearer ", ""), null);
-
-        // TokenDto의 accessToken이 특정 토큰과 일치하는지 확인
-        String accessToken = tokenDto.getAccessToken();
-
-        if ("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW5zdSIsImlhdCI6MTczMTAxNzgwNCwiZXhwIjoxNzMxMDE5NjA0fQ.9XM95JzYWjTga6J9tnRE7P19BqtOQEsVPoHjfzu8ljw".equals(accessToken)) {
-            return 2;
-        }
-        // 다른 토큰일 경우 null 반환
-        return null;
     }
 }
