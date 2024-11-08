@@ -4,6 +4,7 @@ import com.trip.enjoy_trip.dto.LoginDto;
 import com.trip.enjoy_trip.dto.TokenDto;
 import com.trip.enjoy_trip.dto.UserDto;
 import com.trip.enjoy_trip.security.JwtTokenProvider;
+import com.trip.enjoy_trip.service.JwtTokenService;
 import com.trip.enjoy_trip.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService;
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
@@ -58,13 +60,22 @@ public class UserController {
 
         try {
             // JWT에서 사용자 ID 또는 loginId를 추출하여 Redis에서 리프레시 토큰 삭제
-            String loginId = jwtTokenProvider.getLoginIdFromToken(token);
-            userService.logout(loginId);
+            String userId = jwtTokenProvider.getUserIdFromToken(token);
+            userService.logout(userId);
 
             return ResponseEntity.status(HttpStatus.OK).body("로그아웃에 성공하였습니다.");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 실패: " + e.getMessage());
         }
+    }
+    @PostMapping("/re-token")
+    public ResponseEntity<TokenDto> refreshAccessToken(@RequestBody TokenDto tokenDto) {
+        String refreshToken = tokenDto.getRefreshToken();
+
+        // 재발급을 JwtTokenService에 위임
+        TokenDto newTokens = jwtTokenService.refreshTokens(refreshToken);
+
+        return ResponseEntity.ok(newTokens);
     }
 
 
