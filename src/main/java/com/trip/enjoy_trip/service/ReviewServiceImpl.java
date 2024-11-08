@@ -2,11 +2,9 @@ package com.trip.enjoy_trip.service;
 
 import com.trip.enjoy_trip.dto.ReviewDto;
 import com.trip.enjoy_trip.repository.ReviewRepository;
-import com.trip.enjoy_trip.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -79,9 +77,22 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.deleteReview(reviewId);
     }
 
-    //리뷰 좋아요
+    //리뷰 좋아요 누르기
     @Override
     public void likeReview(Integer reviewId, Integer userId) {
         reviewRepository.insertLike(reviewId, userId);
+    }
+
+    //좋아요 조회
+    @Override
+    public int getLikeCount(Integer reviewId) {
+        return reviewRepository.selectLikeCount(reviewId);
+    }
+
+    //좋아요 취소
+    @Override
+    public boolean unlikeReview(Integer reviewId, Integer userId) {
+        int deletedRows = reviewRepository.deleteLike(reviewId, userId);
+        return deletedRows > 0;
     }
 }

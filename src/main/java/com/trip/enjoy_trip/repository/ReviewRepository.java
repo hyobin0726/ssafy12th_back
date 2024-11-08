@@ -17,8 +17,9 @@ public interface ReviewRepository {
 
     void updateReview(ReviewDto reviewDto);      // 리뷰 수정
     void deleteReviewImages(Integer reviewId);       // 기존 이미지 삭제
-
     void deleteReview(Integer reviewId);         // 리뷰 삭제
 
     void insertLike(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
+    int selectLikeCount(@Param("reviewId") Integer reviewId);
+    int deleteLike(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
 }

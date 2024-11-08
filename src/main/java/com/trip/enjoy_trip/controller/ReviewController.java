@@ -2,6 +2,8 @@ package com.trip.enjoy_trip.controller;
 
 import com.trip.enjoy_trip.dto.ReviewDto;
 import com.trip.enjoy_trip.dto.TokenDto;
+import com.trip.enjoy_trip.security.JwtTokenProvider;
+import com.trip.enjoy_trip.service.JwtTokenService;
 import com.trip.enjoy_trip.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,14 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService;
 
     @Autowired
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService, JwtTokenProvider jwtTokenProvider, JwtTokenService jwtTokenService) {
         this.reviewService = reviewService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtTokenService = jwtTokenService;
     }
 
     @PostMapping("/write")
@@ -87,7 +93,7 @@ public class ReviewController {
         return ResponseEntity.ok("리뷰가 성공적으로 삭제되었습니다.");
     }
 
-    // 좋아요 기능
+    // 좋아요 누르기 (POST)
     @PostMapping("/love/{reviewId}")
     public ResponseEntity<String> likeReview(
             @PathVariable Integer reviewId,
@@ -102,6 +108,33 @@ public class ReviewController {
 
         reviewService.likeReview(reviewId, userId);
         return ResponseEntity.ok("리뷰에 좋아요가 성공적으로 등록되었습니다.");
+    }
+
+    // 좋아요 개수 조회 (GET)
+    @GetMapping("/love/{reviewId}")
+    public ResponseEntity<Integer> getLikeCount(@PathVariable Integer reviewId) {
+        int likeCount = reviewService.getLikeCount(reviewId);
+        return ResponseEntity.ok(likeCount);
+    }
+
+    // 좋아요 취소 (DELETE)
+    @DeleteMapping("/love/{reviewId}")
+    public ResponseEntity<String> unlikeReview(
+            @PathVariable Integer reviewId,
+            @RequestHeader("Authorization") String token) {
+
+        Integer userId = extractUserIdFromToken(token);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        boolean isUnliked = reviewService.unlikeReview(reviewId, userId);
+        if (isUnliked) {
+            return ResponseEntity.ok("리뷰에 대한 좋아요가 성공적으로 취소되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("좋아요가 등록되지 않았습니다.");
+        }
     }
 
     // 토큰에서 userId 추출하는 메서드 수정
