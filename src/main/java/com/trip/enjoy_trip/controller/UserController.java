@@ -60,7 +60,7 @@ public class UserController {
 
         try {
             // JWT에서 사용자 ID 또는 loginId를 추출하여 Redis에서 리프레시 토큰 삭제
-            String userId = jwtTokenProvider.getUserIdFromToken(token);
+            Integer userId = jwtTokenProvider.getUserIdFromToken(token);
             userService.logout(userId);
 
             return ResponseEntity.status(HttpStatus.OK).body("로그아웃에 성공하였습니다.");

@@ -51,14 +51,14 @@ public class UserServiceImpl  implements UserService{
         // 비밀번호 일치 확인
         if (loginDto.getPassword().equals(dbUser.getPassword())) {
             // JWT 토큰 발급을 JwtTokenService에 위임
-            return jwtTokenService.generateTokens(dbUser.getLoginId());
+            return jwtTokenService.generateTokens(dbUser.getUserId());
         } else {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
     }
     @Override
-    public void logout(String loginId) {
-        jwtTokenService.deleteRefreshToken(loginId);
+    public void logout(Integer userId) {
+        jwtTokenService.deleteRefreshToken(userId);
     }
 
 }

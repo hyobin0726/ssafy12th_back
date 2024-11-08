@@ -9,5 +9,5 @@ public interface UserService {
     void join(UserDto user);
     boolean checkLoginId(String loginId);
     TokenDto loginUser(LoginDto loginDto);
-    void logout(String loginId);
+    void logout(Integer userId);
 }

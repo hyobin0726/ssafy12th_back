@@ -19,7 +19,7 @@ public class JwtTokenService {
         this.redisTemplate = redisTemplate;
     }
 
-    public TokenDto generateTokens(String userId) {
+    public TokenDto generateTokens(Integer userId) {
         String accessToken = jwtTokenProvider.createAccessToken(userId);
         String refreshToken = jwtTokenProvider.createRefreshToken(userId);
 
@@ -29,7 +29,7 @@ public class JwtTokenService {
         return new TokenDto(accessToken, refreshToken);
     }
     // 리프레시 토큰 삭제 메서드
-    public void deleteRefreshToken(String userId) {
+    public void deleteRefreshToken(Integer userId) {
         String key = "refreshToken:" + userId;
         redisTemplate.delete(key); // Redis에서 해당 리프레시 토큰 삭제
     }
@@ -41,7 +41,7 @@ public class JwtTokenService {
         }
 
         // 리프레시 토큰에서 userId 추출
-        String userId = jwtTokenProvider.getUserIdFromToken(refreshToken);
+        Integer  userId = jwtTokenProvider.getUserIdFromToken(refreshToken);
 
         // Redis에서 저장된 리프레시 토큰과 일치하는지 확인
         String storedRefreshToken = redisTemplate.opsForValue().get("refreshToken:" + userId);
