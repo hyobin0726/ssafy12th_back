@@ -15,19 +15,19 @@ public class JwtTokenProvider {
     private final long refreshTokenValidTime = 1000L * 60 * 60 * 24 * 7; // 7일
 
     // 액세스 토큰 생성
-    public String createAccessToken(String loginId) {
-        return createToken(loginId, accessTokenValidTime);
+    public String createAccessToken(String userId) {
+        return createToken(userId, accessTokenValidTime);
     }
 
     // 리프레시 토큰 생성
-    public String createRefreshToken(String loginId) {
-        return createToken(loginId, refreshTokenValidTime);
+    public String createRefreshToken(String userId) {
+        return createToken(userId, refreshTokenValidTime);
     }
 
-    private String createToken(String loginId, long expireTime) {
+    private String createToken(String userId, long expireTime) {
         Date now = new Date();
         return Jwts.builder()
-                .setSubject(loginId) // loginId를 토큰의 subject로 사용
+                .setSubject(userId) // loginId를 토큰의 subject로 사용
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expireTime))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -44,14 +44,14 @@ public class JwtTokenProvider {
         }
     }
     // 토큰에서 사용자 loginId 추출
-    public String getLoginIdFromToken(String token) {
+    public String getUserIdFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        return claims.getSubject(); // subject에 loginId가 저장되었다고 가정
+        return claims.getSubject();
     }
 
 }
