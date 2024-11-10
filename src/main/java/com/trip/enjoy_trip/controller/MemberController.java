@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("api/v1/member")
@@ -33,5 +30,10 @@ public class MemberController {
         // userId로 사용자 정보 조회
         UserDto userInfo = userService.getUserInfo(userId);
         return ResponseEntity.ok(userInfo);
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getOtherUserProfile(@PathVariable Integer userId) {
+        UserDto userProfile = userService.getOtherUserProfile(userId);
+        return ResponseEntity.ok(userProfile);
     }
 }

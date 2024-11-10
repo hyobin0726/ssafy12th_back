@@ -10,4 +10,5 @@ public interface UserService {
     TokenDto loginUser(LoginDto loginDto);
     void logout(Integer userId);
     UserDto getUserInfo(Integer userId);
+    UserDto getOtherUserProfile(Integer userId);
 }
