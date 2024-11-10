@@ -95,4 +95,9 @@ public class ReviewServiceImpl implements ReviewService {
         int deletedRows = reviewRepository.deleteLike(reviewId, userId);
         return deletedRows > 0;
     }
+    //사용자의 좋아요 여부 조회
+    @Override
+    public boolean isUserLikedReview(Integer reviewId, Integer userId) {
+        return reviewRepository.isUserLikedReview(reviewId, userId) > 0;
+    }
 }

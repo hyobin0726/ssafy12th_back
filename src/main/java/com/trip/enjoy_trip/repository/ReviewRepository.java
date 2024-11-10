@@ -22,4 +22,5 @@ public interface ReviewRepository {
     void insertLike(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
     int selectLikeCount(@Param("reviewId") Integer reviewId);
     int deleteLike(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
+    int isUserLikedReview(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
 }

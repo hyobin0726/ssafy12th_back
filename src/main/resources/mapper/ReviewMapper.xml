@@ -112,4 +112,9 @@
         WHERE review_id = #{reviewId} AND user_id = #{userId}
     </delete>
 
+    <!-- 특정 사용자가 특정 리뷰에 좋아요를 눌렀는지 확인 -->
+    <select id="isUserLikedReview" resultType="int">
+        SELECT COUNT(*) FROM `like` WHERE review_id = #{reviewId} AND user_id = #{userId}
+    </select>
+
 </mapper>

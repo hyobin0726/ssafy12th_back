@@ -16,4 +16,5 @@ public interface ReviewService {
     void likeReview(Integer reviewId, Integer userId); //리뷰 좋아요
     int getLikeCount(Integer reviewId); //좋아요 갯수 조회
     boolean unlikeReview(Integer reviewId, Integer userId); //좋아요 취소
+    boolean isUserLikedReview(Integer reviewId, Integer userId);
 }

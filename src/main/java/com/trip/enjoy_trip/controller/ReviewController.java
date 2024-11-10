@@ -110,6 +110,25 @@ public class ReviewController {
         return ResponseEntity.ok("리뷰에 좋아요가 성공적으로 등록되었습니다.");
     }
 
+    // 좋아요 여부 확인 (GET)
+    @GetMapping("/love/{reviewId}/check")
+    public ResponseEntity<Boolean> checkIfUserLikedReview(
+            @PathVariable Integer reviewId,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        // 토큰에서 userId 추출
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+
+        boolean isLiked = reviewService.isUserLikedReview(reviewId, userId);
+        return ResponseEntity.ok(isLiked);
+    }
+
     // 좋아요 개수 조회 (GET)
     @GetMapping("/love/{reviewId}")
     public ResponseEntity<Integer> getLikeCount(@PathVariable Integer reviewId) {
