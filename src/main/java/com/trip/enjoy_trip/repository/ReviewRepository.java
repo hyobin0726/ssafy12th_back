@@ -30,4 +30,13 @@ public interface ReviewRepository {
     int checkBookmark(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId); //북마크 체크 확인
     int deleteBookmark(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId); //북마크 취소
 
+    //해시태그 기능
+    // 해시태그 기능
+    Integer findHashtagId(String hashtag);  // 해시태그 ID 찾기
+    void createHashtag(String hashtag);     // 해시태그 생성
+    void addHashtagToReview(@Param("reviewId") Integer reviewId, @Param("hashtagId") Integer hashtagId);  // 리뷰에 해시태그 추가
+    List<String> findHashtagsByReviewId(Integer reviewId);  // 특정 리뷰에 등록된 해시태그 조회
+    Integer findHashtagIdByName(String hashtag);  // 해시태그 이름으로 ID 찾기(삭제 용도)
+    void deleteHashtagFromReview(@Param("reviewId") Integer reviewId, @Param("hashtagId") Integer hashtagId);  // 특정 리뷰에서 해시태그 삭제
+
 }

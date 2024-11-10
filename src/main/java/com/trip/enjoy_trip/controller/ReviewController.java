@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -212,5 +213,51 @@ public class ReviewController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("북마크가 존재하지 않습니다.");
         }
+    }
+
+    // 해시태그 추가 (POST)
+    @PostMapping("/hashtag/{reviewId}")
+    public ResponseEntity<String> addHashtagsToReview(
+            @PathVariable Integer reviewId,
+            @RequestBody List<String> hashtags,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        reviewService.addHashtagsToReview(reviewId, hashtags);
+        return ResponseEntity.ok("해시태그가 리뷰에 성공적으로 추가되었습니다.");
+    }
+
+    // 해시태그 조회 (GET)
+    @GetMapping("/hashtag/{reviewId}")
+    public ResponseEntity<List<String>> getHashtagsByReviewId(@PathVariable Integer reviewId) {
+        List<String> hashtags = reviewService.getHashtagsByReviewId(reviewId);
+        if (hashtags.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+        return ResponseEntity.ok(hashtags);
+    }
+
+    // 해시태그 삭제 (DELETE)
+    @DeleteMapping("/hashtag/{reviewId}")
+    public ResponseEntity<String> deleteHashtags(
+            @PathVariable Integer reviewId,
+            @RequestBody List<String> hashtags,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        reviewService.deleteHashtags(reviewId, hashtags);
+        return ResponseEntity.ok("리뷰에서 해시태그가 성공적으로 삭제되었습니다.");
     }
 }

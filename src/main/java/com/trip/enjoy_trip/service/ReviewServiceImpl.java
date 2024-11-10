@@ -108,4 +108,37 @@ public class ReviewServiceImpl implements ReviewService {
     public boolean removeBookmark(Integer reviewId, Integer userId) {
         return reviewRepository.deleteBookmark(reviewId, userId) > 0;
     }
+
+    //해시태그 기능 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    //해시태그 추가
+    @Override
+    public void addHashtagsToReview(Integer reviewId, List<String> hashtags) {
+        for (String hashtag : hashtags) {
+            // 해시태그 ID 찾기 또는 없으면 생성 후 가져오기
+            Integer hashtagId = reviewRepository.findHashtagId(hashtag);
+            if (hashtagId == null) {
+                reviewRepository.createHashtag(hashtag);
+                hashtagId = reviewRepository.findHashtagId(hashtag);
+            }
+            // 리뷰에 해시태그 추가
+            reviewRepository.addHashtagToReview(reviewId, hashtagId);
+        }
+    }
+
+    //해시태그 조회
+    @Override
+    public List<String> getHashtagsByReviewId(Integer reviewId) {
+        return reviewRepository.findHashtagsByReviewId(reviewId);
+    }
+
+    //해시태그 삭제
+    @Override
+    public void deleteHashtags(Integer reviewId, List<String> hashtags) {
+        for (String hashtag : hashtags) {
+            Integer hashtagId = reviewRepository.findHashtagIdByName(hashtag);
+            if (hashtagId != null) {
+                reviewRepository.deleteHashtagFromReview(reviewId, hashtagId);
+            }
+        }
+    }
 }
