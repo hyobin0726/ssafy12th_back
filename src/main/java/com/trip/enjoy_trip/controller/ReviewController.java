@@ -157,4 +157,60 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("좋아요가 등록되지 않았습니다.");
         }
     }
+
+    // 북마크 등록 (POST)
+    @PostMapping("/bookmark/{reviewId}")
+    public ResponseEntity<String> addBookmark(
+            @PathVariable Integer reviewId,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        reviewService.addBookmark(reviewId, userId);
+        return ResponseEntity.ok("리뷰가 북마크에 성공적으로 추가되었습니다.");
+    }
+
+    // 북마크 체크 확인 (GET)
+    @GetMapping("/bookmark/{reviewId}/check")
+    public ResponseEntity<Boolean> checkBookmark(
+            @PathVariable Integer reviewId,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        boolean isBookmarked = reviewService.isReviewBookmarkedByUser(reviewId, userId);
+        return ResponseEntity.ok(isBookmarked);
+    }
+
+    // 북마크 취소 (DELETE)
+    @DeleteMapping("/bookmark/{reviewId}")
+    public ResponseEntity<String> removeBookmark(
+            @PathVariable Integer reviewId,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        boolean isRemoved = reviewService.removeBookmark(reviewId, userId);
+
+        if (isRemoved) {
+            return ResponseEntity.ok("북마크가 성공적으로 취소되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("북마크가 존재하지 않습니다.");
+        }
+    }
 }

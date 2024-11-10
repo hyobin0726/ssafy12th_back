@@ -95,6 +95,7 @@
         WHERE r.review_id = #{reviewId}
     </select>
 
+    <!-- 좋아요 기능-->
     <!-- 좋아요 삽입 -->
     <insert id="insertLike">
         INSERT INTO `like` (review_id, user_id)
@@ -117,4 +118,23 @@
         SELECT COUNT(*) FROM `like` WHERE review_id = #{reviewId} AND user_id = #{userId}
     </select>
 
+    <!-- 북마크 기능-->
+    <!-- 북마크 추가 -->
+    <insert id="insertBookmark">
+        INSERT INTO bookmark (bookmark_date, user_id, review_id)
+        VALUES (NOW(), #{userId}, #{reviewId})
+    </insert>
+
+    <!-- 북마크 여부 확인 -->
+    <select id="checkBookmark" resultType="int">
+        SELECT COUNT(*)
+        FROM bookmark
+        WHERE review_id = #{reviewId} AND user_id = #{userId}
+    </select>
+
+    <!-- 북마크 삭제 -->
+    <delete id="deleteBookmark">
+        DELETE FROM bookmark
+        WHERE review_id = #{reviewId} AND user_id = #{userId}
+    </delete>
 </mapper>

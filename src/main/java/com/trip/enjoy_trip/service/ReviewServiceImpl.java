@@ -54,18 +54,6 @@ public class ReviewServiceImpl implements ReviewService {
         if (reviewDto.getImageUrls() != null && !reviewDto.getImageUrls().isEmpty()) {
             reviewRepository.insertReviewImages(reviewDto.getReviewId(), reviewDto.getImageUrls());
         }
-
-
-//        if (reviewDto.getImageUrls() == null || reviewDto.getImageUrls().isEmpty()) {
-//            throw new IllegalArgumentException("이미지 URL이 필요합니다.");
-//        }
-//        // 리뷰 내용 업데이트
-//        reviewRepository.updateReview(reviewDto);
-//        // 기존 리뷰 이미지 삭제 후 새로운 이미지 리스트 추가
-//        reviewRepository.deleteReviewImages(reviewDto.getReviewId());
-//
-//        // 리뷰 ID를 가져와 리뷰 이미지 추가
-//        reviewRepository.insertReviewImages(reviewDto.getReviewId(), reviewDto.getImageUrls());
     }
 
     @Override
@@ -77,6 +65,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.deleteReview(reviewId);
     }
 
+    // 좋아요 기능 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     //리뷰 좋아요 누르기
     @Override
     public void likeReview(Integer reviewId, Integer userId) {
@@ -99,5 +88,24 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public boolean isUserLikedReview(Integer reviewId, Integer userId) {
         return reviewRepository.isUserLikedReview(reviewId, userId) > 0;
+    }
+
+    //북마크 기능 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    //북마크 추가
+    @Override
+    public void addBookmark(Integer reviewId, Integer userId) {
+        reviewRepository.insertBookmark(reviewId, userId);
+    }
+
+    //북마크 체크 확인
+    @Override
+    public boolean isReviewBookmarkedByUser(Integer reviewId, Integer userId) {
+        return reviewRepository.checkBookmark(reviewId, userId) > 0;
+    }
+
+    //북마크 취소
+    @Override
+    public boolean removeBookmark(Integer reviewId, Integer userId) {
+        return reviewRepository.deleteBookmark(reviewId, userId) > 0;
     }
 }

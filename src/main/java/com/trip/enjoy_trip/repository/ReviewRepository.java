@@ -19,8 +19,15 @@ public interface ReviewRepository {
     void deleteReviewImages(Integer reviewId);       // 기존 이미지 삭제
     void deleteReview(Integer reviewId);         // 리뷰 삭제
 
+    //좋아요 기능
     void insertLike(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
     int selectLikeCount(@Param("reviewId") Integer reviewId);
     int deleteLike(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
     int isUserLikedReview(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId);
+
+    //북마크 기능
+    void insertBookmark(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId); //북마크 추가
+    int checkBookmark(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId); //북마크 체크 확인
+    int deleteBookmark(@Param("reviewId") Integer reviewId, @Param("userId") Integer userId); //북마크 취소
+
 }
