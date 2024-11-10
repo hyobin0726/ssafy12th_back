@@ -19,4 +19,11 @@
         FROM user
         WHERE login_id = #{loginId}
     </select>
+
+    <!-- 사용자 정보 조회 -->
+    <select id="findById" parameterType="int" resultType="com.trip.enjoy_trip.dto.UserDto">
+        SELECT user_id as userId, login_id as loginId, name, email, phone, birth, profile_url as profileUrl, one_liner as oneLiner
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
 </mapper>

@@ -5,7 +5,6 @@ import com.trip.enjoy_trip.dto.TokenDto;
 import com.trip.enjoy_trip.dto.UserDto;
 import com.trip.enjoy_trip.repository.UserRepository;
 import com.trip.enjoy_trip.security.JwtTokenProvider;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +58,12 @@ public class UserServiceImpl  implements UserService{
     @Override
     public void logout(Integer userId) {
         jwtTokenService.deleteRefreshToken(userId);
+    }
+
+    @Override
+    public UserDto getUserInfo(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
 
 }

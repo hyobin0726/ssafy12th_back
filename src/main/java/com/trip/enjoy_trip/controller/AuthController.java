@@ -6,7 +6,6 @@ import com.trip.enjoy_trip.dto.UserDto;
 import com.trip.enjoy_trip.security.JwtTokenProvider;
 import com.trip.enjoy_trip.service.JwtTokenService;
 import com.trip.enjoy_trip.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
 @RestController
-public class UserController {
+public class AuthController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtTokenService jwtTokenService;
@@ -77,6 +76,5 @@ public class UserController {
 
         return ResponseEntity.ok(newTokens);
     }
-
 
 }
