@@ -28,7 +28,24 @@ public class ReviewServiceImpl implements ReviewService {
         // 리뷰 저장
         reviewRepository.insertReview(reviewDto);
         // 리뷰 ID를 가져와 리뷰 이미지 추가
-        reviewRepository.insertReviewImages(reviewDto.getReviewId(), reviewDto.getImageUrls());
+        Integer reviewId = reviewDto.getReviewId();
+        reviewRepository.insertReviewImages(reviewId, reviewDto.getImageUrls());
+
+        // 해시태그 처리
+        List<String> hashtags = reviewDto.getHashtags();
+        if (hashtags != null && !hashtags.isEmpty()) {
+            for (String hashtag : hashtags) {
+                // 해시태그 ID 찾기
+                Integer hashtagId = reviewRepository.findHashtagId(hashtag);
+                if (hashtagId == null) {
+                    // 해시태그가 없으면 새로 생성
+                    reviewRepository.createHashtag(hashtag);
+                    hashtagId = reviewRepository.findHashtagId(hashtag);
+                }
+                // 리뷰와 해시태그 연결
+                reviewRepository.addHashtagToReview(reviewId, hashtagId);
+            }
+        }
     }
 
     @Override
@@ -115,19 +132,19 @@ public class ReviewServiceImpl implements ReviewService {
 
     //해시태그 기능 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     //해시태그 추가
-    @Override
-    public void addHashtagsToReview(Integer reviewId, List<String> hashtags) {
-        for (String hashtag : hashtags) {
-            // 해시태그 ID 찾기 또는 없으면 생성 후 가져오기
-            Integer hashtagId = reviewRepository.findHashtagId(hashtag);
-            if (hashtagId == null) {
-                reviewRepository.createHashtag(hashtag);
-                hashtagId = reviewRepository.findHashtagId(hashtag);
-            }
-            // 리뷰에 해시태그 추가
-            reviewRepository.addHashtagToReview(reviewId, hashtagId);
-        }
-    }
+//    @Override
+//    public void addHashtagsToReview(Integer reviewId, List<String> hashtags) {
+//        for (String hashtag : hashtags) {
+//            // 해시태그 ID 찾기 또는 없으면 생성 후 가져오기
+//            Integer hashtagId = reviewRepository.findHashtagId(hashtag);
+//            if (hashtagId == null) {
+//                reviewRepository.createHashtag(hashtag);
+//                hashtagId = reviewRepository.findHashtagId(hashtag);
+//            }
+//            // 리뷰에 해시태그 추가
+//            reviewRepository.addHashtagToReview(reviewId, hashtagId);
+//        }
+//    }
 
     //해시태그 조회
     @Override

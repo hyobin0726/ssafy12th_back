@@ -30,4 +30,5 @@ public class ReviewDto {
     private Integer gugunId;      // 추가된 필드 (타입 변경)
     private Integer gugunSidoId;  // 추가된 필드 (타입 변경)
     private LocalDateTime createdAt;  // 작성 시간 필드 추가
+    private List<String> hashtags; // 해시태그 추가
 }

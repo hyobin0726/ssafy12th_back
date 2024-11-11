@@ -215,23 +215,23 @@ public class ReviewController {
         }
     }
 
-    // 해시태그 추가 (POST)
-    @PostMapping("/hashtag/{reviewId}")
-    public ResponseEntity<String> addHashtagsToReview(
-            @PathVariable Integer reviewId,
-            @RequestBody List<String> hashtags,
-            @RequestHeader("Authorization") String token) {
-
-        String confirmToken = token.replace("Bearer ", "");
-
-        if (!jwtTokenProvider.validateToken(confirmToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-        }
-
-        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
-        reviewService.addHashtagsToReview(reviewId, hashtags);
-        return ResponseEntity.ok("해시태그가 리뷰에 성공적으로 추가되었습니다.");
-    }
+//    // 해시태그 추가 (POST)
+//    @PostMapping("/hashtag/{reviewId}")
+//    public ResponseEntity<String> addHashtagsToReview(
+//            @PathVariable Integer reviewId,
+//            @RequestBody List<String> hashtags,
+//            @RequestHeader("Authorization") String token) {
+//
+//        String confirmToken = token.replace("Bearer ", "");
+//
+//        if (!jwtTokenProvider.validateToken(confirmToken)) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+//        }
+//
+//        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+//        reviewService.addHashtagsToReview(reviewId, hashtags);
+//        return ResponseEntity.ok("해시태그가 리뷰에 성공적으로 추가되었습니다.");
+//    }
 
     // 해시태그 조회 (GET)
     @GetMapping("/hashtag/{reviewId}")
