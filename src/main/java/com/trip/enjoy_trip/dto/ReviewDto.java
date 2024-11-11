@@ -21,8 +21,8 @@ public class ReviewDto {
     @NotNull(message = "Visibility 가 없습니다.")
     private Integer visibility;    // 공개 설정 (0: 전체 공개, 1: 모임)
 
-    @NotNull(message = "User ID 가 없습니다.")
-    private Integer userId;        // 작성자 ID
+//    @NotNull(message = "User ID 가 없습니다.")
+    private Integer userId;        // 작성자 ID (토큰에서 설정)
 
     @NotNull(message = "imageUrls 가 없습니다.")
     private List<String> imageUrls; // 첨부 이미지 URL 리스트

@@ -29,23 +29,23 @@ public class ReviewController {
         this.jwtTokenService = jwtTokenService;
     }
 
+    //리뷰 작성
     @PostMapping("/write")
     public ResponseEntity<String> createReview(@Valid @RequestBody ReviewDto reviewDto, @RequestHeader("Authorization") String token) {
-
         String confirmToken = token.replace("Bearer ", "");
 
-        if(!jwtTokenProvider.validateToken(confirmToken)){
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
+        // 토큰에서 userId 추출
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+
+        // userId를 ReviewDto에 설정
+        reviewDto.setUserId(userId);
+
         reviewService.createReview(reviewDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("리뷰가 성공적으로 작성되었습니다.");
-//        try {
-//            reviewService.createReview(reviewDto);
-//            return ResponseEntity.status(HttpStatus.CREATED).body("리뷰가 성공적으로 작성되었습니다.");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 작성에 실패하였습니다.");
-//        }
     }
 
     // 특정 리뷰 조회 (리뷰 ID로 조회)

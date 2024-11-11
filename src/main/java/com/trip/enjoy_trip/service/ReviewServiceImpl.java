@@ -17,6 +17,7 @@ public class ReviewServiceImpl implements ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
+    //리뷰 작성
     @Override
     public void createReview(ReviewDto reviewDto) {
         // imageUrls가 비어 있을 경우 예외 처리
@@ -35,11 +36,13 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findById(reviewId);
     }
 
+    //리뷰 조회
     @Override
     public List<ReviewDto> getAllReviews() {
         return reviewRepository.findAll();
     }
 
+    //리뷰 수정
     @Override
     public void updateReview(ReviewDto reviewDto) {
         if (reviewDto.getImageUrls() == null || reviewDto.getImageUrls().isEmpty()) {
@@ -56,6 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    //리뷰 삭제
     @Override
     public void deleteReview(Integer reviewId) {
         // 리뷰 이미지 삭제
