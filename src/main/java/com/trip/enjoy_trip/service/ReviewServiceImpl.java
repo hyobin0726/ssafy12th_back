@@ -74,6 +74,22 @@ public class ReviewServiceImpl implements ReviewService {
         if (reviewDto.getImageUrls() != null && !reviewDto.getImageUrls().isEmpty()) {
             reviewRepository.insertReviewImages(reviewDto.getReviewId(), reviewDto.getImageUrls());
         }
+
+        // 기존 해시태그 삭제 및 새로운 해시태그 추가
+        reviewRepository.deleteHashtagsByReviewId(reviewDto.getReviewId());
+        if (reviewDto.getHashtags() != null) {
+            for (String hashtag : reviewDto.getHashtags()) {
+                //해시태그 ID 찾기
+                Integer hashtagId = reviewRepository.findHashtagId(hashtag);
+                if (hashtagId == null) {
+                    // 해시태그가 없으면 새로 생성
+                    reviewRepository.createHashtag(hashtag);
+                    hashtagId = reviewRepository.findHashtagId(hashtag);
+                }
+                //리뷰와 해시태그 연결
+                reviewRepository.addHashtagToReview(reviewDto.getReviewId(), hashtagId);
+            }
+        }
     }
 
     //리뷰 삭제
@@ -148,7 +164,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     //해시태그 조회
     @Override
-    public List<String> getHashtagsByReviewId(Integer reviewId) {
+    public List<String> getReviewHashtags(Integer reviewId) {
         return reviewRepository.findHashtagsByReviewId(reviewId);
     }
 

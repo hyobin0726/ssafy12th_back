@@ -47,4 +47,5 @@ public interface ReviewRepository {
     Integer findHashtagIdByName(String hashtag);  // 해시태그 이름으로 ID 찾기(삭제 용도)
     void deleteHashtagFromReview(@Param("reviewId") Integer reviewId, @Param("hashtagId") Integer hashtagId);  // 특정 리뷰에서 해시태그 삭제
 
+    void deleteHashtagsByReviewId(Integer reviewId);    // 리뷰의 기존 해시태그 삭제
 }

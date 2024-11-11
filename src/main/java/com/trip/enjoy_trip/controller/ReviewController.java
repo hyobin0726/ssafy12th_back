@@ -235,8 +235,8 @@ public class ReviewController {
 
     // 해시태그 조회 (GET)
     @GetMapping("/hashtag/{reviewId}")
-    public ResponseEntity<List<String>> getHashtagsByReviewId(@PathVariable Integer reviewId) {
-        List<String> hashtags = reviewService.getHashtagsByReviewId(reviewId);
+    public ResponseEntity<List<String>> getReviewHashtags(@PathVariable Integer reviewId) {
+        List<String> hashtags = reviewService.getReviewHashtags(reviewId);
         if (hashtags.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }

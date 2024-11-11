@@ -162,8 +162,8 @@
     <!-- 특정 리뷰에 등록된 해시태그 조회 -->
     <select id="findHashtagsByReviewId" parameterType="integer" resultType="string">
         SELECT h.name
-        FROM review_hashtag rh
-                 JOIN hashtag h ON rh.hashtag_id = h.hashtag_id
+        FROM review_hashtag rh JOIN hashtag h
+        ON rh.hashtag_id = h.hashtag_id
         WHERE rh.review_id = #{reviewId}
     </select>
 
@@ -172,9 +172,8 @@
         SELECT hashtag_id FROM hashtag WHERE name = #{hashtag}
     </select>
 
-    <!-- 특정 리뷰에서 해시태그 삭제 -->
-    <delete id="deleteHashtagFromReview">
-        DELETE FROM review_hashtag
-        WHERE review_id = #{reviewId} AND hashtag_id = #{hashtagId}
+    <!-- 리뷰에 연결된 기존 해시태그 삭제 -->
+    <delete id="deleteHashtagsByReviewId">
+        DELETE FROM review_hashtag WHERE review_id = #{reviewId}
     </delete>
 </mapper>

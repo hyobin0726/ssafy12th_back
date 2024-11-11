@@ -24,7 +24,7 @@ public interface ReviewService {
     boolean removeBookmark(Integer reviewId, Integer userId); //북마크 취소
 
     //해시태그
-    List<String> getHashtagsByReviewId(Integer reviewId); // 해시태그 조회 메서드
+    List<String> getReviewHashtags(Integer reviewId); // 해시태그 조회 메서드
     void deleteHashtags(Integer reviewId, List<String> hashtags); // 해시태그 삭제 메서드
 
 }
