@@ -1,5 +1,6 @@
 package com.trip.enjoy_trip.service;
 
+import com.trip.enjoy_trip.dto.CommentDto;
 import com.trip.enjoy_trip.dto.ReviewDto;
 import com.trip.enjoy_trip.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,4 +179,14 @@ public class ReviewServiceImpl implements ReviewService {
             }
         }
     }
+
+    //댓글 기능 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    //댓글 작성
+    @Override
+    public void createComment(CommentDto commentDto) {
+        // 댓글 작성 로직
+        reviewRepository.insertComment(commentDto);
+    }
+    //댓글 조회
+
 }

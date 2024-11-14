@@ -156,9 +156,6 @@
         VALUES (#{reviewId}, #{hashtagId})
     </insert>
 
-
-
-
     <!-- 특정 리뷰에 등록된 해시태그 조회 -->
     <select id="findHashtagsByReviewId" parameterType="integer" resultType="string">
         SELECT h.name
@@ -176,4 +173,10 @@
     <delete id="deleteHashtagsByReviewId">
         DELETE FROM review_hashtag WHERE review_id = #{reviewId}
     </delete>
+
+    <!-- 댓글 작성 -->
+    <insert id="insertComment">
+        INSERT INTO comment (content, created_at, review_id, user_id)
+        VALUES (#{content}, NOW(), #{reviewId}, #{userId})
+    </insert>
 </mapper>

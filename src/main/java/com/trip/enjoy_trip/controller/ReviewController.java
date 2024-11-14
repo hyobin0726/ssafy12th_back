@@ -1,5 +1,6 @@
 package com.trip.enjoy_trip.controller;
 
+import com.trip.enjoy_trip.dto.CommentDto;
 import com.trip.enjoy_trip.dto.ReviewDto;
 import com.trip.enjoy_trip.dto.TokenDto;
 import com.trip.enjoy_trip.security.JwtTokenProvider;
@@ -237,9 +238,9 @@ public class ReviewController {
     @GetMapping("/hashtag/{reviewId}")
     public ResponseEntity<List<String>> getReviewHashtags(@PathVariable Integer reviewId) {
         List<String> hashtags = reviewService.getReviewHashtags(reviewId);
-        if (hashtags.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
-        }
+//        if (hashtags.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+//        }
         return ResponseEntity.ok(hashtags);
     }
 
@@ -260,4 +261,37 @@ public class ReviewController {
         reviewService.deleteHashtags(reviewId, hashtags);
         return ResponseEntity.ok("리뷰에서 해시태그가 성공적으로 삭제되었습니다.");
     }
+
+
+    // 댓글 작성
+    @PostMapping("/comments/{reviewId}")
+    public ResponseEntity<String> createComment(
+            @PathVariable Integer reviewId,
+            @Valid @RequestBody CommentDto commentDto,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        // 토큰에서 userId 추출
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+
+        // 댓글 DTO에 userId 및 reviewId 설정
+        commentDto.setUserId(userId);
+        commentDto.setReviewId(reviewId);
+
+        reviewService.createComment(commentDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("댓글이 성공적으로 작성되었습니다.");
+    }
+
+    // 리뷰에 달린 댓글 조회
+//    @GetMapping("/comments/{reviewId}")
+//    public ResponseEntity<List<CommentDto>> getCommentsByReview(@PathVariable Integer reviewId) {
+//        List<CommentDto> comments = reviewService.getCommentsByReview(reviewId);
+//        return ResponseEntity.ok(comments);
+//    }
+
 }

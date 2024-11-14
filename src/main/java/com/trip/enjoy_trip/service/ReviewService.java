@@ -1,5 +1,6 @@
 package com.trip.enjoy_trip.service;
 
+import com.trip.enjoy_trip.dto.CommentDto;
 import com.trip.enjoy_trip.dto.ReviewDto;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface ReviewService {
     List<String> getReviewHashtags(Integer reviewId); // 해시태그 조회 메서드
     void deleteHashtags(Integer reviewId, List<String> hashtags); // 해시태그 삭제 메서드
 
+    //댓글
+    void createComment(CommentDto commentDto); // 댓글 작성
 }

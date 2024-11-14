@@ -1,6 +1,7 @@
 package com.trip.enjoy_trip.repository;
 
 import com.trip.enjoy_trip.dto.ReviewDto;
+import com.trip.enjoy_trip.dto.CommentDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -48,4 +49,9 @@ public interface ReviewRepository {
     void deleteHashtagFromReview(@Param("reviewId") Integer reviewId, @Param("hashtagId") Integer hashtagId);  // 특정 리뷰에서 해시태그 삭제
 
     void deleteHashtagsByReviewId(Integer reviewId);    // 리뷰의 기존 해시태그 삭제
+
+    //댓글 기능
+    //댓글 작성
+    void insertComment(CommentDto commentDto);
+    //댓글 조회
 }
