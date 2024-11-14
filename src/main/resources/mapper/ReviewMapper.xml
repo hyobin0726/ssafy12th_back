@@ -75,6 +75,7 @@
         ri.image_url AS image_url  <!-- image_url 별칭 추가 -->
         FROM review r
         LEFT JOIN review_image ri ON r.review_id = ri.review_id
+        ORDER BY r.review_id DESC
     </select>
 
     <!-- 리뷰 상세 조회 -->
