@@ -294,5 +294,32 @@ public class ReviewController {
         return ResponseEntity.ok(comments);
     }
 
+    // 댓글 수정
+    @PutMapping("/comments/{commentId}")
+    public ResponseEntity<String> updateComment(
+            @PathVariable Integer commentId,
+            @Valid @RequestBody CommentDto commentDto,
+            @RequestHeader("Authorization") String token) {
 
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        // 토큰에서 userId 추출
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+
+        // 댓글 수정 요청 시 userId와 댓글의 소유자 ID를 비교하여 권한 확인
+        if (!reviewService.isCommentOwner(commentId, userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("댓글을 수정할 권한이 없습니다.");
+        }
+
+        // commentId와 새로운 content를 설정하여 서비스 호출
+        commentDto.setCommentId(commentId);
+        commentDto.setUserId(userId);
+        reviewService.updateComment(commentDto);
+
+        return ResponseEntity.ok("댓글이 성공적으로 수정되었습니다.");
+    }
 }

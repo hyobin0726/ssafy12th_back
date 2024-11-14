@@ -31,4 +31,6 @@ public interface ReviewService {
     //댓글
     void createComment(CommentDto commentDto); // 댓글 작성
     List<CommentDto> getCommentsByReview(Integer reviewId);  // 리뷰에 달린 댓글 조회
+    void updateComment(CommentDto commentDto);    // 댓글 수정 메서드
+    boolean isCommentOwner(Integer commentId, Integer userId);  // 댓글 소유자 확인 메서드
 }

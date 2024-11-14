@@ -192,4 +192,17 @@ public class ReviewServiceImpl implements ReviewService {
     public List<CommentDto> getCommentsByReview(Integer reviewId) {
         return reviewRepository.findCommentsByReviewId(reviewId);
     }
+    //댓글 수정
+    @Override
+    public void updateComment(CommentDto commentDto) {
+        // 댓글 내용 업데이트
+        reviewRepository.updateComment(commentDto);
+    }
+    //댓글 소유자 확인(댓글 수정 기능)
+    @Override
+    public boolean isCommentOwner(Integer commentId, Integer userId) {
+        // 댓글 소유 여부 확인
+        Integer ownerId = reviewRepository.findCommentOwner(commentId);
+        return ownerId != null && ownerId.equals(userId);
+    }
 }

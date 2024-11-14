@@ -189,4 +189,18 @@
         WHERE c.review_id = #{reviewId}
         ORDER BY c.created_at ASC
     </select>
+
+    <!-- 댓글 수정 -->
+    <update id="updateComment">
+        UPDATE comment
+        SET content = #{content}
+        WHERE comment_id = #{commentId} AND user_id = #{userId}
+    </update>
+
+    <!-- 댓글 작성자 확인 -->
+    <select id="findCommentOwner" resultType="int">
+        SELECT user_id
+        FROM comment
+        WHERE comment_id = #{commentId}
+    </select>
 </mapper>
