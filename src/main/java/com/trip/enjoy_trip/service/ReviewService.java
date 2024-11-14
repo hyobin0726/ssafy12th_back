@@ -34,4 +34,5 @@ public interface ReviewService {
     void updateComment(CommentDto commentDto);    // 댓글 수정 메서드
     boolean isCommentOwner(Integer commentId, Integer userId);  // 댓글 소유자 확인 메서드
     void deleteComment(Integer commentId);    // 댓글 삭제 메서드
+    int getCommentCountByReviewId(Integer reviewId);  // 댓글 수 조회 메서드 추가
 }

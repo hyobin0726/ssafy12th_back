@@ -56,5 +56,5 @@ public interface ReviewRepository {
     void updateComment(CommentDto commentDto);        // 댓글 수정
     Integer findCommentOwner(Integer commentId);      // 댓글 작성자 확인
     void deleteComment(Integer commentId);        // 댓글 삭제 메서드
-
+    int findCommentCountByReviewId(Integer reviewId);  // 댓글 수 조회 메서드 선언
 }

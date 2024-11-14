@@ -347,4 +347,11 @@ public class ReviewController {
         reviewService.deleteComment(commentId);
         return ResponseEntity.ok("댓글이 성공적으로 삭제되었습니다.");
     }
+
+    // 특정 리뷰에 달린 댓글 수 조회
+    @GetMapping("/comments/{reviewId}/count")
+    public ResponseEntity<Integer> getCommentCountByReviewId(@PathVariable Integer reviewId) {
+        int commentCount = reviewService.getCommentCountByReviewId(reviewId);
+        return ResponseEntity.ok(commentCount);
+    }
 }

@@ -210,4 +210,9 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteComment(Integer commentId) {
         reviewRepository.deleteComment(commentId);
     }
+    //댓글 수 조회
+    @Override
+    public int getCommentCountByReviewId(Integer reviewId) {
+        return reviewRepository.findCommentCountByReviewId(reviewId);
+    }
 }
