@@ -1,5 +1,6 @@
 package com.trip.enjoy_trip.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -30,5 +31,8 @@ public class ReviewDto {
     private Integer gugunId;      // 추가된 필드 (타입 변경)
     private Integer gugunSidoId;  // 추가된 필드 (타입 변경)
     private LocalDateTime createdAt;  // 작성 시간 필드 추가
+
+    //해시태그 필드는 필요해서 DTO에서 제거를 못하기에 여기서 아예 필드가 null이면 json응답에서 제외해줌
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> hashtags; // 해시태그 추가
 }
