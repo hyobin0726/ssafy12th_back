@@ -11,7 +11,7 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 실제 사용 시 보안을 위해 환경 변수로 관리
-    private final long accessTokenValidTime = 1000L * 60 * 30; // 30분
+    private final long accessTokenValidTime = 1000L * 60 * 60 * 24; // 1일
     private final long refreshTokenValidTime = 1000L * 60 * 60 * 24 * 7; // 7일
 
     // 액세스 토큰 생성
