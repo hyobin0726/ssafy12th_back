@@ -205,4 +205,9 @@ public class ReviewServiceImpl implements ReviewService {
         Integer ownerId = reviewRepository.findCommentOwner(commentId);
         return ownerId != null && ownerId.equals(userId);
     }
+    // 댓글 삭제
+    @Override
+    public void deleteComment(Integer commentId) {
+        reviewRepository.deleteComment(commentId);
+    }
 }

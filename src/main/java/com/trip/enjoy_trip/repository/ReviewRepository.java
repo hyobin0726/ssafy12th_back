@@ -55,4 +55,6 @@ public interface ReviewRepository {
     List<CommentDto> findCommentsByReviewId(Integer reviewId);  // 리뷰에 달린 댓글 조회
     void updateComment(CommentDto commentDto);        // 댓글 수정
     Integer findCommentOwner(Integer commentId);      // 댓글 작성자 확인
+    void deleteComment(Integer commentId);        // 댓글 삭제 메서드
+
 }

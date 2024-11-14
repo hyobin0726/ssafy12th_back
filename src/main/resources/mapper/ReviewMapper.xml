@@ -203,4 +203,10 @@
         FROM comment
         WHERE comment_id = #{commentId}
     </select>
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteComment">
+        DELETE FROM comment
+        WHERE comment_id = #{commentId}
+    </delete>
 </mapper>
