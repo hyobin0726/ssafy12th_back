@@ -288,10 +288,11 @@ public class ReviewController {
     }
 
     // 리뷰에 달린 댓글 조회
-//    @GetMapping("/comments/{reviewId}")
-//    public ResponseEntity<List<CommentDto>> getCommentsByReview(@PathVariable Integer reviewId) {
-//        List<CommentDto> comments = reviewService.getCommentsByReview(reviewId);
-//        return ResponseEntity.ok(comments);
-//    }
+    @GetMapping("/comments/{reviewId}")
+    public ResponseEntity<List<CommentDto>> getCommentsByReview(@PathVariable Integer reviewId) {
+        List<CommentDto> comments = reviewService.getCommentsByReview(reviewId);
+        return ResponseEntity.ok(comments);
+    }
+
 
 }

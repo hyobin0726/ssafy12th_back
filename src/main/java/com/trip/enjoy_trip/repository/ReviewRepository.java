@@ -54,4 +54,5 @@ public interface ReviewRepository {
     //댓글 작성
     void insertComment(CommentDto commentDto);
     //댓글 조회
+    List<CommentDto> findCommentsByReviewId(Integer reviewId);  // 리뷰에 달린 댓글 조회
 }

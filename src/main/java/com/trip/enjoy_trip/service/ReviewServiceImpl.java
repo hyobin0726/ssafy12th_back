@@ -188,5 +188,8 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.insertComment(commentDto);
     }
     //댓글 조회
-
+    @Override
+    public List<CommentDto> getCommentsByReview(Integer reviewId) {
+        return reviewRepository.findCommentsByReviewId(reviewId);
+    }
 }

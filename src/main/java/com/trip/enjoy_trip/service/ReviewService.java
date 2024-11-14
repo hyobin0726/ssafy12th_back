@@ -30,4 +30,5 @@ public interface ReviewService {
 
     //댓글
     void createComment(CommentDto commentDto); // 댓글 작성
+    List<CommentDto> getCommentsByReview(Integer reviewId);  // 리뷰에 달린 댓글 조회
 }

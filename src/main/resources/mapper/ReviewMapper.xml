@@ -179,4 +179,14 @@
         INSERT INTO comment (content, created_at, review_id, user_id)
         VALUES (#{content}, NOW(), #{reviewId}, #{userId})
     </insert>
+
+    <!-- 리뷰에 달린 댓글 조회 -->
+    <select id="findCommentsByReviewId" parameterType="int" resultType="com.trip.enjoy_trip.dto.CommentDto">
+        SELECT c.comment_id AS commentId, c.content, c.created_at AS createdAt,
+        c.review_id AS reviewId, c.user_id AS userId, u.name AS userName
+        FROM comment c
+        JOIN user u ON c.user_id = u.user_id
+        WHERE c.review_id = #{reviewId}
+        ORDER BY c.created_at ASC
+    </select>
 </mapper>
