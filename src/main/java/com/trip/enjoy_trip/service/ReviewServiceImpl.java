@@ -215,4 +215,15 @@ public class ReviewServiceImpl implements ReviewService {
     public int getCommentCountByReviewId(Integer reviewId) {
         return reviewRepository.findCommentCountByReviewId(reviewId);
     }
+
+    // 사용자가 작성한 리뷰 조회
+    @Override
+    public List<ReviewDto> getMyReviews(Integer userId) {
+        return reviewRepository.findReviewsByUserId(userId);
+    }
+    // 사용자가 북마크한 리뷰 조회
+    @Override
+    public List<ReviewDto> getBookmarkedReviews(Integer userId) {
+        return reviewRepository.findBookmarkedReviewsByUserId(userId);
+    }
 }

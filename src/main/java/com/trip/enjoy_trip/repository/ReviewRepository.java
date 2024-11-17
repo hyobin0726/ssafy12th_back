@@ -57,4 +57,8 @@ public interface ReviewRepository {
     Integer findCommentOwner(Integer commentId);      // 댓글 작성자 확인
     void deleteComment(Integer commentId);        // 댓글 삭제 메서드
     int findCommentCountByReviewId(Integer reviewId);  // 댓글 수 조회 메서드 선언
+
+    //마이페이지 작성한 리뷰 조회 & 북마크한 리뷰 조회
+    List<ReviewDto> findReviewsByUserId(Integer userId);  // 사용자가 작성한 리뷰 조회
+    List<ReviewDto> findBookmarkedReviewsByUserId(Integer userId);  // 사용자가 북마크한 리뷰 조회
 }

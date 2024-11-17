@@ -216,24 +216,6 @@ public class ReviewController {
         }
     }
 
-//    // 해시태그 추가 (POST)
-//    @PostMapping("/hashtag/{reviewId}")
-//    public ResponseEntity<String> addHashtagsToReview(
-//            @PathVariable Integer reviewId,
-//            @RequestBody List<String> hashtags,
-//            @RequestHeader("Authorization") String token) {
-//
-//        String confirmToken = token.replace("Bearer ", "");
-//
-//        if (!jwtTokenProvider.validateToken(confirmToken)) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-//        }
-//
-//        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
-//        reviewService.addHashtagsToReview(reviewId, hashtags);
-//        return ResponseEntity.ok("해시태그가 리뷰에 성공적으로 추가되었습니다.");
-//    }
-
     // 해시태그 조회 (GET)
     @GetMapping("/hashtag/{reviewId}")
     public ResponseEntity<List<String>> getReviewHashtags(@PathVariable Integer reviewId) {
@@ -353,5 +335,24 @@ public class ReviewController {
     public ResponseEntity<Integer> getCommentCountByReviewId(@PathVariable Integer reviewId) {
         int commentCount = reviewService.getCommentCountByReviewId(reviewId);
         return ResponseEntity.ok(commentCount);
+    }
+
+    //마이페이지에 내가 작성한 리뷰 조회 & 내가 북마크한 리뷰 조회
+    // 사용자가 작성한 리뷰 조회
+    @GetMapping("/my-reviews")
+    public ResponseEntity<List<ReviewDto>> getMyReviews(@RequestHeader("Authorization") String token) {
+        String confirmToken = token.replace("Bearer ", "");
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        List<ReviewDto> myReviews = reviewService.getMyReviews(userId);
+        return ResponseEntity.ok(myReviews);
+    }
+
+    // 사용자가 북마크한 리뷰 조회
+    @GetMapping("/my-bookmarks")
+    public ResponseEntity<List<ReviewDto>> getBookmarkedReviews(@RequestHeader("Authorization") String token) {
+        String confirmToken = token.replace("Bearer ", "");
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        List<ReviewDto> bookmarkedReviews = reviewService.getBookmarkedReviews(userId);
+        return ResponseEntity.ok(bookmarkedReviews);
     }
 }
