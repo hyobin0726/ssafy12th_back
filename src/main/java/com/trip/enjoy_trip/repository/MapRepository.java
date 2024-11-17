@@ -12,4 +12,5 @@ public interface MapRepository {
     List<AttractionDto> findAttractionsByRegion(
             @Param("areaCode") Integer areaCode,
             @Param("siGunGuCode") Integer siGunGuCode); //시군구 검색
+    List<AttractionDto> findAttractionsByContentTypeId(@Param("contentTypeId") Integer contentTypeId); //콘텐츠 검색
 }

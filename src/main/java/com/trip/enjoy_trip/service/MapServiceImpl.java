@@ -25,4 +25,9 @@ public class MapServiceImpl implements MapService {
     public List<AttractionDto> getAttractionsByRegion(Integer areaCode, Integer siGunGuCode) {
         return mapRepository.findAttractionsByRegion(areaCode, siGunGuCode);
     }
+    //콘텐츠 검색
+    @Override
+    public List<AttractionDto> searchAttractionsByContentTypeId(Integer contentTypeId) {
+        return mapRepository.findAttractionsByContentTypeId(contentTypeId);
+    }
 }
