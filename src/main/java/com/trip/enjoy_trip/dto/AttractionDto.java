@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttractionDto {
-    private int attractionId;
+    private Integer attractionId;
     private Integer contentId;
     private String title;
     private Integer contentTypeId;

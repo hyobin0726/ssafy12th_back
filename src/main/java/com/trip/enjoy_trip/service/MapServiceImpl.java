@@ -15,9 +15,14 @@ public class MapServiceImpl implements MapService {
     private MapRepository mapRepository;
 
 
-    //지도 관광지명 검색
+    //관광지명 검색
     @Override
     public List<AttractionDto> searchAttractionsByTitle(String title) {
         return mapRepository.findAttractionsByTitle(title);
+    }
+    //시군구 검색
+    @Override
+    public List<AttractionDto> getAttractionsByRegion(Integer areaCode, Integer siGunGuCode) {
+        return mapRepository.findAttractionsByRegion(areaCode, siGunGuCode);
     }
 }

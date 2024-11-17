@@ -4,6 +4,7 @@
 
 <mapper namespace="com.trip.enjoy_trip.repository.MapRepository">
 
+<!--    관광지명 검색-->
     <select id="findAttractionsByTitle" resultType="com.trip.enjoy_trip.dto.AttractionDto">
         SELECT
             attraction_id AS attractionId,
@@ -28,6 +29,34 @@
             attraction
         WHERE
             title LIKE CONCAT('%', #{title}, '%')
+    </select>
+
+<!--    시군구 검색-->
+    <select id="findAttractionsByRegion" resultType="com.trip.enjoy_trip.dto.AttractionDto">
+        SELECT
+            attraction_id AS attractionId,
+            content_id AS contentId,
+            title,
+            content_type_id AS contentTypeId,
+            area_code AS areaCode,
+            si_gun_gu_code AS siGunGuCode,
+            first_image1 AS firstImage1,
+            first_image2 AS firstImage2,
+            map_level AS mapLevel,
+            latitude,
+            longitude,
+            zipcode,
+            tel,
+            addr1,
+            addr2,
+            business_hours AS businessHours,
+            homepage,
+            overview
+        FROM
+            attraction
+        WHERE
+            (#{areaCode} IS NULL OR area_code = #{areaCode})
+          AND (#{siGunGuCode} IS NULL OR si_gun_gu_code = #{siGunGuCode})
     </select>
 
 </mapper>
