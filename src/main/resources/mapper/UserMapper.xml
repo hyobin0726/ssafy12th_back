@@ -26,4 +26,12 @@
         FROM user
         WHERE user_id = #{userId}
     </select>
+
+    <!-- 로그인 아이디 사용자 정보 조회 -->
+    <select id="findUserByLoginId" parameterType="string" resultType="com.trip.enjoy_trip.dto.UserDto">
+        SELECT user_id as userId, login_id as loginId, name, email, phone, birth, profile_url as profileUrl, one_liner as oneLiner
+        FROM user
+        WHERE login_id = #{loginId}
+    </select>
+
 </mapper>

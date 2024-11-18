@@ -74,4 +74,12 @@ public class UserServiceImpl  implements UserService{
         userDto.setPassword(null);
         return userDto;
     }
+
+    @Override
+    public UserDto SearchOther(String loginId) {
+        UserDto userDto = userRepository.findUserByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("User with loginId '" + loginId + "' not found"));
+        userDto.setPassword(null);
+        return userDto;
+    }
 }
