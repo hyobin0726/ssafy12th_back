@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 public class UserDto {
+    private Integer userId;
     @NotBlank(message = "아이디를 입력해주세요.")
     @Pattern(regexp = "^[a-zA-Z0-9]{8,20}$", message = "아이디는 영어 또는 숫자로 8 ~ 20자리까지 가능합니다.")
     private String loginId;
