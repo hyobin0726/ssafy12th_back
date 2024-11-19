@@ -262,4 +262,12 @@
         WHERE b.user_id = #{userId}
         ORDER BY b.bookmark_date DESC
     </select>
+    <!-- 해당 크루 리뷰 조회 -->
+     <select id="findReviewsByCrewId" parameterType="int" resultType="com.trip.enjoy_trip.dto.ReviewDto">
+     SELECT *
+     FROM review
+     WHERE visibility = #{crewId}
+     </select>
+
+
 </mapper>

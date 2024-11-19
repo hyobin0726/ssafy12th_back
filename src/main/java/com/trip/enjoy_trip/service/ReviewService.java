@@ -38,5 +38,7 @@ public interface ReviewService {
 
     //마이페이지 조회
     List<ReviewDto> getMyReviews(Integer userId);     // 사용자가 작성한 리뷰 조회
-    List<ReviewDto> getBookmarkedReviews(Integer userId);    // 사용자가 북마크한 리뷰 조회
+    List<ReviewDto> getBookmarkedReviews(Integer userId);
+
+    List<ReviewDto> getReviewsByCrewId(int crewId);
 }
