@@ -43,4 +43,12 @@ public class MapServiceImpl implements MapService {
     public List<AttractionDto> searchAttractionsByContentTypeId(Integer contentTypeId) {
         return mapRepository.findAttractionsByContentTypeId(contentTypeId);
     }
+
+    //근처 명소 검색
+    @Override
+    public List<AttractionDto> searchNearbyAttractions(double latitude, double longitude, double radius) {
+        return mapRepository.findNearbyAttractions(latitude, longitude, radius);
+    }
+
+
 }

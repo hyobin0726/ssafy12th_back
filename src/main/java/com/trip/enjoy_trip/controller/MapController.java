@@ -49,4 +49,13 @@ public class MapController {
     public List<AttractionDto> getAttractionsByContentTypeId(@RequestParam Integer contentTypeId) {
         return mapService.searchAttractionsByContentTypeId(contentTypeId);
     }
+
+    //근처 명소 검색
+    @GetMapping("/search/nearby")
+    public List<AttractionDto> searchNearbyAttractions(@RequestParam("latitude") double latitude,
+                                                       @RequestParam("longitude") double longitude,
+                                                       @RequestParam("radius") double radius) {
+        return mapService.searchNearbyAttractions(latitude, longitude, radius);
+    }
+
 }

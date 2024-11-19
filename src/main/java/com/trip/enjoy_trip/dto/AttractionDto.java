@@ -19,8 +19,8 @@ public class AttractionDto {
     private String firstImage1;
     private String firstImage2;
     private Integer mapLevel;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private Double  latitude;
+    private Double  longitude;
     private String zipcode;
     private String tel;
     private String addr1;
@@ -28,4 +28,7 @@ public class AttractionDto {
     private String businessHours;
     private String homepage;
     private String overview;
+
+    // 추가된 distance 필드
+    private Double distance;
 }
