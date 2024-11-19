@@ -236,4 +236,10 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDto> getReviewsByTitle(String title) {
         return reviewRepository.findReviewsByTitle(title);
     }
+
+    //리뷰의 평균 별점 조회
+    @Override
+    public Double getAveragePointByTitle(String title) {
+        return reviewRepository.findAveragePointByTitle(title);
+    }
 }

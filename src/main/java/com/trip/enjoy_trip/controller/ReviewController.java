@@ -365,4 +365,14 @@ public class ReviewController {
 
         return ResponseEntity.ok(reviews);
     }
+
+    //리뷰의 평균 별점 조회
+    @GetMapping("/average-point")
+    public ResponseEntity<Double> getAveragePointByTitle(@RequestParam String title) {
+        Double averagePoint = reviewService.getAveragePointByTitle(title);
+        if (averagePoint == null) {
+            return ResponseEntity.ok(0.0); // 리뷰가 없을 경우 0.0 반환
+        }
+        return ResponseEntity.ok(averagePoint);
+    }
 }

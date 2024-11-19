@@ -40,6 +40,6 @@ public interface ReviewService {
     List<ReviewDto> getMyReviews(Integer userId);     // 사용자가 작성한 리뷰 조회
     List<ReviewDto> getBookmarkedReviews(Integer userId);    // 사용자가 북마크한 리뷰 조회
 
-    //명소 제목을 기반으로 리뷰 조회
     public List<ReviewDto> getReviewsByTitle(String title);  //명소 제목을 기반으로 리뷰 조회
+    Double getAveragePointByTitle(String title);  //리뷰의 평균 별점 조회
 }

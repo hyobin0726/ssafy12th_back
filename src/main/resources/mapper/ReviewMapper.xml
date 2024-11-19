@@ -264,7 +264,7 @@
     </select>
 
     <!-- 명소 제목으로 리뷰 조회 -->
-    <select id="findReviewsByTitle" parameterType="string" resultMap="ReviewWithImagesResultMap">
+    <select id="findReviewsByTitle" parameterType="string" resultMap="ReviewWithImagesResultMap" useCache="false">
         SELECT DISTINCT
             r.review_id AS review_id,
             r.content,
@@ -281,6 +281,13 @@
                  LEFT JOIN review_image ri ON r.review_id = ri.review_id
         WHERE r.title = #{title}  <!-- 정확히 일치하는 제목 검색 -->
         ORDER BY r.review_id DESC
+    </select>
+
+<!--    리뷰의 평균 별점 조회-->
+    <select id="findAveragePointByTitle" parameterType="string" resultType="double">
+        SELECT ROUND(AVG(r.point), 1) AS average_point
+        FROM review r
+        WHERE r.title = #{title}
     </select>
 
 </mapper>
