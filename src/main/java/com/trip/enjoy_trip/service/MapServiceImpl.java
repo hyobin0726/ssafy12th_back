@@ -6,10 +6,6 @@ import com.trip.enjoy_trip.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,4 +47,9 @@ public class MapServiceImpl implements MapService {
     }
 
 
+    //마커 기능
+    @Override
+    public void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId) {
+        mapRepository.addMarker(latitude, longitude, userId, attractionId, gugunId, sidoId);
+    }
 }

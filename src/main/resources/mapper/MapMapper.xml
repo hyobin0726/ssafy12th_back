@@ -140,7 +140,11 @@
     </select>
 
 
-
-
+<!--    마커 기능-->
+    <!-- 마커 추가 -->
+    <insert id="addMarker" parameterType="map">
+        INSERT INTO marker (latitude, longitude, user_id, attraction_id, gugun_id, sido_id)
+        VALUES (#{latitude}, #{longitude}, #{userId}, #{attractionId}, #{gugunId}, #{sidoId});
+    </insert>
 
 </mapper>

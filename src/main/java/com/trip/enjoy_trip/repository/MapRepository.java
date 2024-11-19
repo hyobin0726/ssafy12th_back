@@ -20,4 +20,7 @@ public interface MapRepository {
     List<AttractionDto> findAttractionsByContentTypeId(@Param("contentTypeId") Integer contentTypeId); //콘텐츠 검색
 
     List<AttractionDto> findNearbyAttractions(double latitude, double longitude, double radius); //근처 명소 검색
+
+    //마커 기능
+    void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId);
 }

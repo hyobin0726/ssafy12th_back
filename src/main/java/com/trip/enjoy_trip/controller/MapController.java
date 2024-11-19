@@ -1,8 +1,14 @@
 package com.trip.enjoy_trip.controller;
 
 import com.trip.enjoy_trip.dto.AttractionDto;
+import com.trip.enjoy_trip.dto.MarkerRequest;
+import com.trip.enjoy_trip.security.JwtTokenProvider;
+import com.trip.enjoy_trip.service.JwtTokenService;
 import com.trip.enjoy_trip.service.MapService;
+import com.trip.enjoy_trip.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -14,7 +20,16 @@ import java.util.Map;
 public class MapController {
 
     @Autowired
-    private MapService mapService;
+    private final MapService mapService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService;
+
+    @Autowired
+    public MapController(MapService mapService, JwtTokenProvider jwtTokenProvider, JwtTokenService jwtTokenService) {
+        this.mapService = mapService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtTokenService = jwtTokenService;
+    }
 
     // 검색 API: 지역, 시군구, 관광지명 우선순위로 검색
     @GetMapping("/search/title")
@@ -58,4 +73,21 @@ public class MapController {
         return mapService.searchNearbyAttractions(latitude, longitude, radius);
     }
 
+    //마커 기능
+    @PostMapping("/marker")
+    public ResponseEntity<String> addMarker(
+            @RequestHeader("Authorization") String token,
+            @RequestBody MarkerRequest markerRequest) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        mapService.addMarker(markerRequest.getLatitude(), markerRequest.getLongitude(), userId,
+                markerRequest.getAttractionId(), markerRequest.getGugunId(), markerRequest.getSidoId());
+        return ResponseEntity.ok("마커가 성공적으로 추가되었습니다.");
+    }
 }
