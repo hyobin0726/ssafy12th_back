@@ -28,7 +28,4 @@ public class AttractionDto {
     private String businessHours;
     private String homepage;
     private String overview;
-
-    // 추가된 distance 필드
-    private Double distance;
 }

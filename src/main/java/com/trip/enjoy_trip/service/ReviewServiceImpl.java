@@ -21,6 +21,7 @@ public class ReviewServiceImpl implements ReviewService {
     //리뷰 작성
     @Override
     public void createReview(ReviewDto reviewDto) {
+//        System.out.println("Received ReviewDto in Service: {} " +  reviewDto.getAttractionId() + " - " + reviewDto.getGugunId() + " - " + reviewDto.getGugunSidoId()); // 로그 추가
         // imageUrls가 비어 있을 경우 예외 처리
         if (reviewDto.getImageUrls() == null || reviewDto.getImageUrls().isEmpty()) {
             throw new IllegalArgumentException("이미지 URL이 필요합니다.");
@@ -96,6 +97,9 @@ public class ReviewServiceImpl implements ReviewService {
     //리뷰 삭제
     @Override
     public void deleteReview(Integer reviewId) {
+        // 리뷰 해시태그 삭제
+        reviewRepository.deleteHashtagsByReviewId(reviewId);
+
         // 리뷰 이미지 삭제
         reviewRepository.deleteReviewImages(reviewId);
 

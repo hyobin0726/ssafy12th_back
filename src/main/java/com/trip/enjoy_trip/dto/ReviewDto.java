@@ -27,9 +27,18 @@ public class ReviewDto {
 
     @NotNull(message = "imageUrls 가 없습니다.")
     private List<String> imageUrls; // 첨부 이미지 URL 리스트
+
+    @NotNull(message = "attractionId 가 없습니다.")
     private Integer attractionId; // 추가된 필드 (타입 변경)
+
+    @NotNull(message = "gugunId 가 없습니다.")
     private Integer gugunId;      // 추가된 필드 (타입 변경)
+
+    @NotNull(message = "gugunSidoId 가 없습니다.")
     private Integer gugunSidoId;  // 추가된 필드 (타입 변경)
+
+    @NotNull(message = "title 가 없습니다.")
+    private String title;
     private LocalDateTime createdAt;  // 작성 시간 필드 추가
 
     //해시태그 필드는 필요해서 DTO에서 제거를 못하기에 여기서 아예 필드가 null이면 json응답에서 제외해줌

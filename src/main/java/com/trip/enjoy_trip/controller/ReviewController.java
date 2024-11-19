@@ -45,6 +45,8 @@ public class ReviewController {
         // userId를 ReviewDto에 설정
         reviewDto.setUserId(userId);
 
+//        System.out.println("Received ReviewDto in Controller: {} " +  reviewDto.getAttractionId() + " - " + reviewDto.getGugunId() + " - " + reviewDto.getGugunSidoId());
+
         reviewService.createReview(reviewDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("리뷰가 성공적으로 작성되었습니다.");
     }

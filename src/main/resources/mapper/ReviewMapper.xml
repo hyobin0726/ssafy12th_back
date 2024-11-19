@@ -7,8 +7,8 @@
 
     <!-- 리뷰 추가 -->
     <insert id="insertReview" useGeneratedKeys="true" keyProperty="reviewId">
-        INSERT INTO review (content, point, visibility, user_id, attraction_id, gugun_id, gugun_sido_id)
-        VALUES (#{content}, #{point}, #{visibility}, #{userId}, #{attractionId}, #{gugunId}, #{gugunSidoId})
+        INSERT INTO review (content, point, visibility, user_id, attraction_id, gugun_id, gugun_sido_id, title)
+        VALUES (#{content}, #{point}, #{visibility}, #{userId}, #{attractionId}, #{gugunId}, #{gugunSidoId}, #{title})
     </insert>
 
 
@@ -53,6 +53,7 @@
         <result column="attraction_id" property="attractionId"/>
         <result column="gugun_id" property="gugunId"/>
         <result column="gugun_sido_id" property="gugunSidoId"/>
+        <result column="title" property="title"/>
         <result column="created_at" property="createdAt"/>
         <!-- 이미지 URL 리스트 설정 -->
         <collection property="imageUrls" ofType="string">
@@ -71,6 +72,7 @@
         r.attraction_id AS attraction_id,
         r.gugun_id AS gugun_id,
         r.gugun_sido_id AS gugun_sido_id,
+        r.title AS title,
         r.created_at AS created_at,
         ri.image_url AS image_url  <!-- image_url 별칭 추가 -->
         FROM review r
@@ -89,6 +91,7 @@
         r.attraction_id AS attraction_id,
         r.gugun_id AS gugun_id,
         r.gugun_sido_id AS gugun_sido_id,
+        r.title AS title,
         r.created_at AS created_at,
         ri.image_url AS image_url  <!-- image_url 별칭 추가 -->
         FROM review r
@@ -228,6 +231,7 @@
             r.visibility AS visibility,
             r.user_id AS userId,
             r.attraction_id AS attractionId,
+            r.title AS title,
             r.created_at AS createdAt,
             (SELECT GROUP_CONCAT(h.name)
              FROM review_hashtag rh
@@ -247,6 +251,7 @@
             r.visibility AS visibility,
             r.user_id AS userId,
             r.attraction_id AS attractionId,
+            r.title AS title,
             r.created_at AS createdAt,
             (SELECT GROUP_CONCAT(h.name)
              FROM review_hashtag rh
