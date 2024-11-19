@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.enjoy_trip.repository.CrewRepository">
+
+    <!-- Crew 생성 -->
+    <insert id="createCrew" parameterType="com.trip.enjoy_trip.dto.CrewDto" useGeneratedKeys="true" keyProperty="crewId">
+        INSERT INTO crew (name)
+        VALUES (#{name});
+    </insert>
+    <!-- Crew_User 추가 -->
+    <insert id="addUserToCrew" parameterType="com.trip.enjoy_trip.dto.CrewUserDto">
+        INSERT INTO crew_user (joined_at, crew_id, user_id)
+        VALUES (NOW(), #{crewId}, #{userId});
+    </insert>
+
+    <!-- 크루와 관련된 사용자 삭제 -->
+    <delete id="deleteCrewUsersByCrewId" parameterType="int">
+        DELETE FROM crew_user WHERE crew_id = #{crewId};
+    </delete>
+
+    <!-- 크루 삭제 -->
+    <delete id="deleteCrewById" parameterType="int">
+        DELETE FROM crew WHERE crew_id = #{crewId};
+    </delete>
+
+    <!-- 특정 모임 정보 조회 -->
+    <select id="findCrewById" parameterType="int" resultType="com.trip.enjoy_trip.dto.CrewDto">
+        SELECT crew_id AS crewId, name, created_at AS createdAt, updated_at AS updatedAt
+        FROM crew
+        WHERE crew_id = #{crewId}
+    </select>
+
+    <!-- 특정 모임에 속한 유저 정보 조회 -->
+    <select id="findUsersByCrewId" parameterType="int" resultType="com.trip.enjoy_trip.dto.CrewUserDto">
+        SELECT crew_user_id AS crewUserId, joined_at AS joinedAt, crew_id AS crewId, user_id AS userId
+        FROM crew_user
+        WHERE crew_id = #{crewId}
+    </select>
+
+    <!-- 사용자 모임 조회 -->
+    <select id="findCrewsByUserId" parameterType="int" resultType="com.trip.enjoy_trip.dto.CrewDto">
+        SELECT c.crew_id AS crewId, c.name, c.created_at AS createdAt, c.updated_at AS updatedAt
+        FROM crew c
+        JOIN crew_user cu ON c.crew_id = cu.crew_id
+        WHERE cu.user_id = #{userId}
+    </select>
+
+    <!-- 모임 나가기 -->
+    <delete id="leaveCrew" parameterType="map">
+        DELETE FROM crew_user
+        WHERE crew_id = #{crewId} AND user_id = #{userId}
+    </delete>
+
+    <!-- 모임 이름 수정 -->
+    <update id="updateCrewName" parameterType="map">
+        UPDATE crew
+        SET name = #{name}, updated_at = NOW()
+        WHERE crew_id = #{crewId};
+    </update>
+</mapper>

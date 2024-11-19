@@ -36,4 +36,13 @@ public class MemberController {
         UserDto userProfile = userService.getOtherUserProfile(userId);
         return ResponseEntity.ok(userProfile);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<UserDto> SearchOther(@RequestParam String loginId) {
+        UserDto userProfile = userService.SearchOther(loginId);
+        if (userProfile == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(userProfile);
+    }
 }

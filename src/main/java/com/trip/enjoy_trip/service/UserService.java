@@ -11,4 +11,5 @@ public interface UserService {
     void logout(Integer userId);
     UserDto getUserInfo(Integer userId);
     UserDto getOtherUserProfile(Integer userId);
+    UserDto SearchOther(String loginId);
 }

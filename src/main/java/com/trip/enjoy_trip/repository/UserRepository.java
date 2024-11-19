@@ -13,4 +13,5 @@ public interface UserRepository {
     int countByLoginId(String loginId);
     Optional<LoginDto> findByLoginId(@Param("loginId") String loginId);
     Optional<UserDto> findById(@Param("userId") Integer userId);
+    Optional<UserDto> findUserByLoginId(@Param("loginId") String loginId);
 }
