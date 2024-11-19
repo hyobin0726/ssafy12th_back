@@ -357,4 +357,12 @@ public class ReviewController {
         List<ReviewDto> bookmarkedReviews = reviewService.getBookmarkedReviews(userId);
         return ResponseEntity.ok(bookmarkedReviews);
     }
+
+    //명소 제목을 기반으로 리뷰 조회
+    @GetMapping("/search-attraction")
+    public ResponseEntity<List<ReviewDto>> getReviewsByTitle(@RequestParam String title) {
+        List<ReviewDto> reviews = reviewService.getReviewsByTitle(title);
+
+        return ResponseEntity.ok(reviews);
+    }
 }
