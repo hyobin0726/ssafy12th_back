@@ -374,8 +374,8 @@ public class ReviewController {
 
     //리뷰의 평균 별점 조회
     @GetMapping("/average-point")
-    public ResponseEntity<Double> getAveragePointByTitle(@RequestParam String title) {
-        Double averagePoint = reviewService.getAveragePointByTitle(title);
+    public ResponseEntity<Double> getAveragePointByAttractionId(@RequestParam Integer attractionId) {
+        Double averagePoint = reviewService.getAveragePointByAttractionId(attractionId);
         if (averagePoint == null) {
             return ResponseEntity.ok(0.0); // 리뷰가 없을 경우 0.0 반환
         }

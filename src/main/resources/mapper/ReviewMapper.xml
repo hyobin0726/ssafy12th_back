@@ -292,10 +292,10 @@
     </select>
 
 <!--    리뷰의 평균 별점 조회-->
-    <select id="findAveragePointByTitle" parameterType="string" resultType="double">
+    <select id="findAveragePointByAttractionId" parameterType="int" resultType="double">
         SELECT ROUND(AVG(r.point), 1) AS average_point
         FROM review r
-        WHERE r.title = #{title}
+        WHERE r.attraction_id = #{attractionId} <!-- 명소 ID로 검색 -->
     </select>
 
 </mapper>

@@ -43,5 +43,5 @@ public interface ReviewService {
     List<ReviewDto> getReviewsByCrewId(int crewId);
 
     List<ReviewDto> getReviewsByAttractionId(Integer attractionId);  //명소 제목을 기반으로 리뷰 조회
-    Double getAveragePointByTitle(String title);  //리뷰의 평균 별점 조회
+    Double getAveragePointByAttractionId(Integer attractionId);  //리뷰의 평균 별점 조회
 }
