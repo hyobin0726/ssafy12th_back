@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.trip.enjoy_trip.repository.SearchRepository">
+    <resultMap id="ReviewWithImagesResultMap" type="com.trip.enjoy_trip.dto.ReviewDto">
+        <id column="review_id" property="reviewId"/>
+        <result column="content" property="content"/>
+        <result column="point" property="point"/>
+        <result column="visibility" property="visibility"/>
+        <result column="user_id" property="userId"/>
+        <result column="attraction_id" property="attractionId"/>
+        <result column="gugun_id" property="gugunId"/>
+        <result column="gugun_sido_id" property="gugunSidoId"/>
+        <result column="title" property="title"/>
+        <result column="created_at" property="createdAt"/>
+        <collection property="imageUrls" ofType="string">
+            <result column="image_url"/>
+        </collection>
+    </resultMap>
+
+    <!-- 해시태그로 리뷰 검색 -->
+    <select id="findByHashtag" parameterType="string" resultMap="ReviewWithImagesResultMap">
+        SELECT DISTINCT
+        r.review_id AS review_id,
+        r.content,
+        r.point,
+        r.visibility,
+        r.user_id AS user_id,
+        r.attraction_id AS attraction_id,
+        r.gugun_id AS gugun_id,
+        r.gugun_sido_id AS gugun_sido_id,
+        r.title AS title,
+        r.created_at AS created_at,
+        ri.image_url AS image_url
+        FROM
+        review r
+        LEFT JOIN
+        review_image ri ON r.review_id = ri.review_id
+        JOIN
+        review_hashtag rh ON r.review_id = rh.review_id
+        JOIN
+        hashtag h ON rh.hashtag_id = h.hashtag_id
+        WHERE
+        h.name = #{hashtagName}
+        ORDER BY
+        r.review_id DESC;
+    </select>
+    <!-- 해시태그 추천 검색 -->
+    <select id="findHashtagsByKeyword" parameterType="string" resultType="string">
+        SELECT
+        name
+        FROM
+        hashtag
+        WHERE
+        name LIKE CONCAT(#{keyword}, '%')
+        ORDER BY
+        name ASC
+        LIMIT 10;
+    </select>
+
+
+</mapper>
