@@ -230,7 +230,7 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDto> getBookmarkedReviews(Integer userId) {
         return reviewRepository.findBookmarkedReviewsByUserId(userId);
     }
-
+    //해당 크루 리뷰 조회
     @Override
     public List<ReviewDto> getReviewsByCrewId(int crewId) {
         return reviewRepository.findReviewsByCrewId(crewId);

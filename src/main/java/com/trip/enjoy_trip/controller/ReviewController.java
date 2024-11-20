@@ -357,7 +357,7 @@ public class ReviewController {
         List<ReviewDto> bookmarkedReviews = reviewService.getBookmarkedReviews(userId);
         return ResponseEntity.ok(bookmarkedReviews);
     }
-
+    //해당 크루 리뷰 조회
     @GetMapping("/crew/{crewId}")
     public ResponseEntity<List<ReviewDto>> getReviewsByCrewId(@PathVariable int crewId) {
         List<ReviewDto> reviews = reviewService.getReviewsByCrewId(crewId);
