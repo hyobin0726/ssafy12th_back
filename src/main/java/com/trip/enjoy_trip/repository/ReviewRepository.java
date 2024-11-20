@@ -62,7 +62,11 @@ public interface ReviewRepository {
     List<ReviewDto> findReviewsByUserId(Integer userId);  // 사용자가 작성한 리뷰 조회
     List<ReviewDto> findBookmarkedReviewsByUserId(Integer userId);  // 사용자가 북마크한 리뷰 조회
 
+    //해당 크루 리뷰 조회
+    List<ReviewDto> findReviewsByCrewId(int crewId);
+
     //명소 제목을 기반으로 리뷰 조회
     List<ReviewDto> findReviewsByTitle(String title); //명소 제목을 기반으로 리뷰 조회
     Double findAveragePointByTitle(String title);  //리뷰의 평균 별점 조회
+
 }
