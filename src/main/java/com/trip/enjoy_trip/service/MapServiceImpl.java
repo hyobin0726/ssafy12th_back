@@ -1,6 +1,7 @@
 package com.trip.enjoy_trip.service.impl;
 
 import com.trip.enjoy_trip.dto.AttractionDto;
+import com.trip.enjoy_trip.dto.MarkerDto;
 import com.trip.enjoy_trip.repository.MapRepository;
 import com.trip.enjoy_trip.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,27 @@ public class MapServiceImpl implements MapService {
 
     //마커 기능
     @Override
+    public boolean checkAttractionExists(Integer attractionId) {
+        return mapRepository.isAttractionExists(attractionId);
+    }
+    @Override
     public void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId) {
         mapRepository.addMarker(latitude, longitude, userId, attractionId, gugunId, sidoId);
+    }
+
+    @Override
+    public List<MarkerDto> getUserMarkers(Integer userId) {
+        return mapRepository.findMarkersByUserId(userId);
+    }
+
+    @Override
+    public boolean deleteMarker(Integer markerId, Integer userId) {
+        // 먼저 사용자가 해당 마커의 소유자인지 확인
+        Integer ownerId = mapRepository.findMarkerOwner(markerId);
+        if (ownerId != null && ownerId.equals(userId)) {
+            mapRepository.deleteMarker(markerId);
+            return true;
+        }
+        return false; // 소유자가 아닌 경우 삭제 불가
     }
 }

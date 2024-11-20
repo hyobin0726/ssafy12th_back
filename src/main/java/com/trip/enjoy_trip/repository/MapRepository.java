@@ -1,6 +1,7 @@
 package com.trip.enjoy_trip.repository;
 
 import com.trip.enjoy_trip.dto.AttractionDto;
+import com.trip.enjoy_trip.dto.MarkerDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,5 +23,10 @@ public interface MapRepository {
     List<AttractionDto> findNearbyAttractions(double latitude, double longitude, double radius); //근처 명소 검색
 
     //마커 기능
+    boolean isAttractionExists(Integer attractionId); // 중복 체크
     void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId);
+    List<MarkerDto> findMarkersByUserId(Integer userId);
+
+    Integer findMarkerOwner(Integer markerId); // 마커 소유자 확인
+    void deleteMarker(Integer markerId); // 마커 삭제
 }

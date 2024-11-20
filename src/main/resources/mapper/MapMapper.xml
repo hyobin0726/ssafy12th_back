@@ -141,10 +141,43 @@
 
 
 <!--    마커 기능-->
+    <!-- 특정 attraction_id가 존재하는지 확인 -->
+    <select id="isAttractionExists" resultType="boolean">
+        SELECT EXISTS (
+                       SELECT 1
+                       FROM marker
+                       WHERE attraction_id = #{attractionId}
+                   )
+    </select>
     <!-- 마커 추가 -->
     <insert id="addMarker" parameterType="map">
         INSERT INTO marker (latitude, longitude, user_id, attraction_id, gugun_id, sido_id)
         VALUES (#{latitude}, #{longitude}, #{userId}, #{attractionId}, #{gugunId}, #{sidoId});
     </insert>
 
+
+    <select id="findMarkersByUserId" resultType="com.trip.enjoy_trip.dto.MarkerDto">
+        SELECT
+            marker_id AS markerId,
+            latitude,
+            longitude,
+            attraction_id AS attractionId,
+            gugun_id AS gugunId,
+            sido_id AS sidoId
+        FROM marker
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 마커 소유자 확인 -->
+    <select id="findMarkerOwner" resultType="int">
+        SELECT user_id
+        FROM marker
+        WHERE marker_id = #{markerId};
+    </select>
+
+    <!-- 마커 삭제 -->
+    <delete id="deleteMarker">
+        DELETE FROM marker
+        WHERE marker_id = #{markerId};
+    </delete>
 </mapper>

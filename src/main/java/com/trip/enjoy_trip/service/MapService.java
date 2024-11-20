@@ -1,6 +1,7 @@
 package com.trip.enjoy_trip.service;
 
 import com.trip.enjoy_trip.dto.AttractionDto;
+import com.trip.enjoy_trip.dto.MarkerDto;
 
 import java.util.List;
 
@@ -19,5 +20,8 @@ public interface MapService {
     List<AttractionDto> searchNearbyAttractions(double latitude, double longitude, double radius); //근처 명소 검색
 
 
+    boolean checkAttractionExists(Integer attractionId);
     void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId); //마커 추가하기
+    List<MarkerDto> getUserMarkers(Integer userId);
+    boolean deleteMarker(Integer markerId, Integer userId);
 }
