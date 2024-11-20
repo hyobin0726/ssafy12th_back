@@ -271,23 +271,23 @@
 
 
 
-    <!-- 명소 제목으로 리뷰 조회 -->
-    <select id="findReviewsByTitle" parameterType="string" resultMap="ReviewWithImagesResultMap" useCache="false">
+    <!-- 명소 ID로 리뷰 조회 -->
+    <select id="findReviewsByAttractionId" parameterType="int" resultMap="ReviewWithImagesResultMap" useCache="false">
         SELECT DISTINCT
-            r.review_id AS review_id,
-            r.content,
-            r.point,
-            r.visibility,
-            r.user_id AS user_id,
-            r.attraction_id AS attraction_id,
-            r.gugun_id AS gugun_id,
-            r.gugun_sido_id AS gugun_sido_id,
-            r.title AS title,
-            r.created_at AS created_at,
-            ri.image_url AS image_url
+        r.review_id AS review_id,
+        r.content,
+        r.point,
+        r.visibility,
+        r.user_id AS user_id,
+        r.attraction_id AS attraction_id,
+        r.gugun_id AS gugun_id,
+        r.gugun_sido_id AS gugun_sido_id,
+        r.title AS title,
+        r.created_at AS created_at,
+        ri.image_url AS image_url
         FROM review r
-                 LEFT JOIN review_image ri ON r.review_id = ri.review_id
-        WHERE r.title = #{title}  <!-- 정확히 일치하는 제목 검색 -->
+        LEFT JOIN review_image ri ON r.review_id = ri.review_id
+        WHERE r.attraction_id = #{attractionId}  <!-- 명소 ID로 검색 -->
         ORDER BY r.review_id DESC
     </select>
 

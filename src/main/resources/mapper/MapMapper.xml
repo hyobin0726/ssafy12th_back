@@ -155,7 +155,7 @@
         VALUES (#{latitude}, #{longitude}, #{userId}, #{attractionId}, #{gugunId}, #{sidoId});
     </insert>
 
-
+<!--    사용자의 마커 목록 조회-->
     <select id="findMarkersByUserId" resultType="com.trip.enjoy_trip.dto.MarkerDto">
         SELECT
             marker_id AS markerId,
@@ -168,7 +168,7 @@
         WHERE user_id = #{userId}
     </select>
 
-    <!-- 마커 소유자 확인 -->
+    <!-- 마커 소유자 확인(삭제 용도) -->
     <select id="findMarkerOwner" resultType="int">
         SELECT user_id
         FROM marker

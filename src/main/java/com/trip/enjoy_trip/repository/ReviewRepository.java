@@ -66,7 +66,7 @@ public interface ReviewRepository {
     List<ReviewDto> findReviewsByCrewId(int crewId);
 
     //명소 제목을 기반으로 리뷰 조회
-    List<ReviewDto> findReviewsByTitle(String title); //명소 제목을 기반으로 리뷰 조회
+    List<ReviewDto> findReviewsByAttractionId(Integer attractionId); //명소 제목을 기반으로 리뷰 조회
     Double findAveragePointByTitle(String title);  //리뷰의 평균 별점 조회
 
 }

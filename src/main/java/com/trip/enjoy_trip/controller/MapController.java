@@ -73,6 +73,7 @@ public class MapController {
     }
 
     //마커 기능
+    //마커 추가하기
     @PostMapping("/marker")
     public ResponseEntity<String> addMarker(
             @RequestHeader("Authorization") String token,
@@ -86,6 +87,7 @@ public class MapController {
 
         Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
 
+        //마커 추가하기 전 명소 id 중복체크
         boolean isAttractionExists = mapService.checkAttractionExists(markerDto.getAttractionId());
         if (isAttractionExists) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 해당 attraction에 마커가 존재합니다.");

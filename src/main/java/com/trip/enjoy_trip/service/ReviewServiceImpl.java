@@ -238,8 +238,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     //명소 제목을 기반으로 리뷰 조회
     @Override
-    public List<ReviewDto> getReviewsByTitle(String title) {
-        return reviewRepository.findReviewsByTitle(title);
+    public List<ReviewDto> getReviewsByAttractionId(Integer attractionId) {
+        return reviewRepository.findReviewsByAttractionId(attractionId);
     }
 
     //리뷰의 평균 별점 조회

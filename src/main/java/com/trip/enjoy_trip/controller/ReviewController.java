@@ -364,10 +364,10 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
-    //명소 제목을 기반으로 리뷰 조회
-    @GetMapping("/search-attraction")
-    public ResponseEntity<List<ReviewDto>> getReviewsByTitle(@RequestParam String title) {
-        List<ReviewDto> reviews = reviewService.getReviewsByTitle(title);
+    // 명소 ID를 기반으로 리뷰 조회
+    @GetMapping("/search-by-attraction")
+    public ResponseEntity<List<ReviewDto>> getReviewsByAttractionId(@RequestParam Integer attractionId) {
+        List<ReviewDto> reviews = reviewService.getReviewsByAttractionId(attractionId);
 
         return ResponseEntity.ok(reviews);
     }
