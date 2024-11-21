@@ -23,7 +23,7 @@ public interface MapRepository {
     List<AttractionDto> findNearbyAttractions(double latitude, double longitude, double radius); //근처 명소 검색
 
     //마커 기능
-    boolean isAttractionExists(Integer attractionId); // 명소 id 중복 체크
+    boolean isMarkerExists(Integer userId, Integer attractionId);
     void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId); //마커 추가하기
     List<MarkerDto> findMarkersByUserId(Integer userId); // 사용자의 마커 목록 조회
 

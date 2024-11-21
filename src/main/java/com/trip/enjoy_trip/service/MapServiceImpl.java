@@ -49,14 +49,12 @@ public class MapServiceImpl implements MapService {
 
 
     //마커 기능
-    //마커 추가하기 전 명소 id 중복체크
-    @Override
-    public boolean checkAttractionExists(Integer attractionId) {
-        return mapRepository.isAttractionExists(attractionId);
-    }
     //마커 추가하기
     @Override
     public void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId) {
+        if (mapRepository.isMarkerExists(userId, attractionId)) { //중복체크
+            throw new IllegalArgumentException("이미 해당 명소에 마커가 존재합니다.");
+        }
         mapRepository.addMarker(latitude, longitude, userId, attractionId, gugunId, sidoId);
     }
 

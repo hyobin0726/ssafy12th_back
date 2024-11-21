@@ -20,7 +20,6 @@ public interface MapService {
     List<AttractionDto> searchNearbyAttractions(double latitude, double longitude, double radius); //근처 명소 검색
 
 
-    boolean checkAttractionExists(Integer attractionId); //마커 추가하기 전 명소 id 중복체크
     void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId); //마커 추가하기
     List<MarkerDto> getUserMarkers(Integer userId); // 사용자의 마커 목록 조회
     boolean deleteMarker(Integer markerId, Integer userId); // 마커 삭제
