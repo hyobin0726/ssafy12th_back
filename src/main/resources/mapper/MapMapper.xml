@@ -141,14 +141,15 @@
 
 
 <!--    마커 기능-->
-    <!-- 특정 attraction_id가 존재하는지 확인 -->
-    <select id="isAttractionExists" resultType="boolean">
+    <!-- 사용자별 명소 마커 중복 확인 -->
+    <select id="isMarkerExists" parameterType="map" resultType="boolean">
         SELECT EXISTS (
                        SELECT 1
                        FROM marker
-                       WHERE attraction_id = #{attractionId}
+                       WHERE user_id = #{userId} AND attraction_id = #{attractionId}
                    )
     </select>
+
     <!-- 마커 추가 -->
     <insert id="addMarker" parameterType="map">
         INSERT INTO marker (latitude, longitude, user_id, attraction_id, gugun_id, sido_id)

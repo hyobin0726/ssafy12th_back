@@ -88,13 +88,19 @@ public class MapController {
         Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
 
         //마커 추가하기 전 명소 id 중복체크
-        boolean isAttractionExists = mapService.checkAttractionExists(markerDto.getAttractionId());
-        if (isAttractionExists) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 해당 attraction에 마커가 존재합니다.");
+        try {
+            mapService.addMarker(
+                    markerDto.getLatitude(),
+                    markerDto.getLongitude(),
+                    userId,
+                    markerDto.getAttractionId(),
+                    markerDto.getGugunId(),
+                    markerDto.getSidoId()
+            );
+            return ResponseEntity.ok("마커가 성공적으로 추가되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        mapService.addMarker(markerDto.getLatitude(), markerDto.getLongitude(), userId,
-                markerDto.getAttractionId(), markerDto.getGugunId(), markerDto.getSidoId());
-        return ResponseEntity.ok("마커가 성공적으로 추가되었습니다.");
     }
 
     // 사용자의 마커 목록 조회
