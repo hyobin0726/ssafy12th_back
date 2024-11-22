@@ -33,10 +33,17 @@
 
     <!-- 특정 모임에 속한 유저 정보 조회 -->
     <select id="findUsersByCrewId" parameterType="int" resultType="com.trip.enjoy_trip.dto.CrewUserDto">
-        SELECT crew_user_id AS crewUserId, joined_at AS joinedAt, crew_id AS crewId, user_id AS userId
-        FROM crew_user
-        WHERE crew_id = #{crewId}
+        SELECT
+        cu.crew_user_id AS crewUserId,
+        cu.joined_at AS joinedAt,
+        cu.crew_id AS crewId,
+        cu.user_id AS userId,
+        u.login_id AS loginId -- loginId 추가
+        FROM crew_user cu
+        JOIN user u ON cu.user_id = u.user_id -- user 테이블 조인
+        WHERE cu.crew_id = #{crewId};
     </select>
+
 
     <!-- 사용자 모임 조회 -->
     <select id="findCrewsByUserId" parameterType="int" resultType="com.trip.enjoy_trip.dto.CrewDto">

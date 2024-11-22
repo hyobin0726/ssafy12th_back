@@ -51,7 +51,7 @@ public class CrewController {
         CrewDto crew = crewService.getCrewById(crewId); // 모임 정보 조회
         List<CrewUserDto> users = crewService.getUsersByCrewId(crewId); // 유저 정보 조회
 
-        // 모임 정보에 유저 리스트 포함 (필요 시 CrewDto에 유저 리스트 추가)
+        // 모임 정보에 유저 리스트 포함
         crew.setUsers(users);
 
         return ResponseEntity.ok(crew);
