@@ -73,37 +73,7 @@ public class MapController {
     }
 
     //마커 기능
-    //마커 추가하기
-    @PostMapping("/marker")
-    public ResponseEntity<String> addMarker(
-            @RequestHeader("Authorization") String token,
-            @RequestBody MarkerDto markerDto) {
-
-        String confirmToken = token.replace("Bearer ", "");
-
-        if (!jwtTokenProvider.validateToken(confirmToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-        }
-
-        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
-
-        //마커 추가하기 전 명소 id 중복체크
-        try {
-            mapService.addMarker(
-                    markerDto.getLatitude(),
-                    markerDto.getLongitude(),
-                    userId,
-                    markerDto.getAttractionId(),
-                    markerDto.getGugunId(),
-                    markerDto.getSidoId()
-            );
-            return ResponseEntity.ok("마커가 성공적으로 추가되었습니다.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    // 사용자의 마커 목록 조회
+    // 사용자의 마커 목록 조회(마이페이지)
     @GetMapping("/marker")
     public ResponseEntity<List<MarkerDto>> getUserMarkers(@RequestHeader("Authorization") String token) {
         String confirmToken = token.replace("Bearer ", "");
@@ -117,11 +87,12 @@ public class MapController {
         return ResponseEntity.ok(markers);
     }
 
-    // 마커 삭제
-    @DeleteMapping("/marker/{markerId}")
-    public ResponseEntity<String> deleteMarker(
+
+    @PostMapping("/marker/{attractionId}")
+    public ResponseEntity<String> addMarker(
+            @PathVariable Integer attractionId,
             @RequestHeader("Authorization") String token,
-            @PathVariable Integer markerId) {
+            @RequestBody MarkerDto markerDTO) {
 
         String confirmToken = token.replace("Bearer ", "");
 
@@ -130,12 +101,53 @@ public class MapController {
         }
 
         Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
-        boolean isDeleted = mapService.deleteMarker(markerId, userId);
 
-        if (isDeleted) {
+        // 명소 ID와 사용자 ID 설정
+        markerDTO.setAttractionId(attractionId);
+        markerDTO.setUserId(userId);
+
+        // Service 호출
+        mapService.addMarker(markerDTO,userId);
+
+        return ResponseEntity.ok("마커가 성공적으로 추가되었습니다.");
+    }
+
+    // 마커 체크 확인 (GET)
+    @GetMapping("/marker/{attractionId}/check")
+    public ResponseEntity<Boolean> checkMarker(
+            @PathVariable Integer attractionId,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        boolean isMarked = mapService.isMarkerExists(attractionId, userId);
+        return ResponseEntity.ok(isMarked);
+    }
+
+    // 마커 삭제 (DELETE)
+    @DeleteMapping("/marker/{attractionId}")
+    public ResponseEntity<String> removeMarker(
+            @PathVariable Integer attractionId,
+            @RequestHeader("Authorization") String token) {
+
+        String confirmToken = token.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(confirmToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Integer userId = jwtTokenProvider.getUserIdFromToken(confirmToken);
+        boolean isRemoved = mapService.removeMarker(attractionId, userId);
+
+        if (isRemoved) {
             return ResponseEntity.ok("마커가 성공적으로 삭제되었습니다.");
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 권한이 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("마커가 존재하지 않습니다.");
         }
     }
 }

@@ -25,4 +25,6 @@ public class MarkerDto {
 
     @NotNull(message = "sidoId 가 없습니다.")
     private Integer sidoId;
+
+    private Integer userId;
 }

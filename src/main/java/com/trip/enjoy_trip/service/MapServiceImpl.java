@@ -1,4 +1,4 @@
-package com.trip.enjoy_trip.service.impl;
+package com.trip.enjoy_trip.service;
 
 import com.trip.enjoy_trip.dto.AttractionDto;
 import com.trip.enjoy_trip.dto.MarkerDto;
@@ -49,30 +49,28 @@ public class MapServiceImpl implements MapService {
 
 
     //마커 기능
-    //마커 추가하기
-    @Override
-    public void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId) {
-        if (mapRepository.isMarkerExists(userId, attractionId)) { //중복체크
-            throw new IllegalArgumentException("이미 해당 명소에 마커가 존재합니다.");
-        }
-        mapRepository.addMarker(latitude, longitude, userId, attractionId, gugunId, sidoId);
-    }
-
     // 사용자의 마커 목록 조회
     @Override
     public List<MarkerDto> getUserMarkers(Integer userId) {
         return mapRepository.findMarkersByUserId(userId);
     }
 
-    // 마커 삭제
+    //마커 수정본
     @Override
-    public boolean deleteMarker(Integer markerId, Integer userId) {
-        // 먼저 사용자가 해당 마커의 소유자인지 확인
-        Integer ownerId = mapRepository.findMarkerOwner(markerId);
-        if (ownerId != null && ownerId.equals(userId)) {
-            mapRepository.deleteMarker(markerId);
-            return true;
-        }
-        return false; // 소유자가 아닌 경우 삭제 불가
+    public void addMarker(MarkerDto markerDTO, Integer userId) {
+        markerDTO.setUserId(userId);
+        mapRepository.insertMarker(markerDTO);
     }
+
+    @Override
+    public boolean isMarkerExists(Integer attractionId, Integer userId) {
+        return mapRepository.findMarkerByUserAndAttraction(userId, attractionId) != null;
+    }
+
+    @Override
+    public boolean removeMarker(Integer attractionId, Integer userId) {
+        return mapRepository.deleteMarkerByUserAndAttraction(userId, attractionId) > 0;
+    }
+
+
 }

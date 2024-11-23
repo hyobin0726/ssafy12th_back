@@ -139,23 +139,6 @@
         ]]>
     </select>
 
-
-<!--    마커 기능-->
-    <!-- 사용자별 명소 마커 중복 확인 -->
-    <select id="isMarkerExists" parameterType="map" resultType="boolean">
-        SELECT EXISTS (
-                       SELECT 1
-                       FROM marker
-                       WHERE user_id = #{userId} AND attraction_id = #{attractionId}
-                   )
-    </select>
-
-    <!-- 마커 추가 -->
-    <insert id="addMarker" parameterType="map">
-        INSERT INTO marker (latitude, longitude, user_id, attraction_id, gugun_id, sido_id)
-        VALUES (#{latitude}, #{longitude}, #{userId}, #{attractionId}, #{gugunId}, #{sidoId});
-    </insert>
-
 <!--    사용자의 마커 목록 조회-->
     <select id="findMarkersByUserId" resultType="com.trip.enjoy_trip.dto.MarkerDto">
         SELECT
@@ -169,16 +152,23 @@
         WHERE user_id = #{userId}
     </select>
 
-    <!-- 마커 소유자 확인(삭제 용도) -->
-    <select id="findMarkerOwner" resultType="int">
-        SELECT user_id
+    <!-- 사용자와 명소 ID로 마커 조회 -->
+    <select id="findMarkerByUserAndAttraction" resultType="com.trip.enjoy_trip.dto.MarkerDto">
+        SELECT *
         FROM marker
-        WHERE marker_id = #{markerId};
+        WHERE user_id = #{userId} AND attraction_id = #{attractionId}
     </select>
 
-    <!-- 마커 삭제 -->
-    <delete id="deleteMarker">
-        DELETE FROM marker
-        WHERE marker_id = #{markerId};
+    <!-- 마커 추가 -->
+    <insert id="insertMarker" parameterType="com.trip.enjoy_trip.dto.MarkerDto">
+        INSERT INTO marker (latitude, longitude, user_id, attraction_id, gugun_id, sido_id)
+        VALUES (#{latitude}, #{longitude}, #{userId}, #{attractionId}, #{gugunId}, #{sidoId})
+    </insert>
+
+    <!-- 사용자와 명소 ID로 마커 삭제 -->
+    <delete id="deleteMarkerByUserAndAttraction">
+        DELETE
+        FROM marker
+        WHERE user_id = #{userId} AND attraction_id = #{attractionId}
     </delete>
 </mapper>

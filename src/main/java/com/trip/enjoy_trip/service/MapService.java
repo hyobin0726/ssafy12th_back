@@ -19,8 +19,10 @@ public interface MapService {
 
     List<AttractionDto> searchNearbyAttractions(double latitude, double longitude, double radius); //근처 명소 검색
 
+    List<MarkerDto> getUserMarkers(Integer userId); // 사용자의 마커 목록 조회//    boolean deleteMarker(Integer markerId, Integer userId); // 마커 삭제
 
-    void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId); //마커 추가하기
-    List<MarkerDto> getUserMarkers(Integer userId); // 사용자의 마커 목록 조회
-    boolean deleteMarker(Integer markerId, Integer userId); // 마커 삭제
+    //마커기능 수정본
+    void addMarker(MarkerDto markerDTO, Integer userId); // 마커 추가
+    boolean isMarkerExists(Integer attractionId, Integer userId); // 마커 체크
+    boolean removeMarker(Integer attractionId, Integer userId); // 마커 삭제
 }

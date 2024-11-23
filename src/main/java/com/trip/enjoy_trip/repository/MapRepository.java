@@ -23,10 +23,11 @@ public interface MapRepository {
     List<AttractionDto> findNearbyAttractions(double latitude, double longitude, double radius); //근처 명소 검색
 
     //마커 기능
-    boolean isMarkerExists(Integer userId, Integer attractionId);
-    void addMarker(Double latitude, Double longitude, Integer userId, Integer attractionId, Integer gugunId, Integer sidoId); //마커 추가하기
     List<MarkerDto> findMarkersByUserId(Integer userId); // 사용자의 마커 목록 조회
 
-    Integer findMarkerOwner(Integer markerId); // 마커 소유자 확인(삭제 용도)
-    void deleteMarker(Integer markerId); // 마커 삭제
+    //마커기능 수정본
+    MarkerDto findMarkerByUserAndAttraction(@Param("userId") Integer userId, @Param("attractionId") Integer attractionId);
+    void insertMarker(MarkerDto markerDTO);
+    int deleteMarkerByUserAndAttraction(@Param("userId") Integer userId, @Param("attractionId") Integer attractionId);
+
 }
