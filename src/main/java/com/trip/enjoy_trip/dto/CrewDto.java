@@ -14,5 +14,4 @@ public class CrewDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<CrewUserDto> users;
-    private String loginId;
 }

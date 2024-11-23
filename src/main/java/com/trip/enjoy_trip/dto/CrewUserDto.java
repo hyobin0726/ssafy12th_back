@@ -12,4 +12,5 @@ public class CrewUserDto {
     private LocalDateTime joinedAt;
     private Integer crewId;
     private Integer userId;
+    private String loginId;
 }
