@@ -17,6 +17,10 @@ public interface CrewRepository {
     void deleteCrewUsersByCrewId(@Param("crewId") int crewId);
     // 크루 삭제
     void deleteCrewById(@Param("crewId") int crewId);
+    void deleteReviewHashtagsByCrewId(@Param("crewId") int crewId);
+    void deleteReviewImagesByCrewId(@Param("crewId") int crewId);
+    void deleteReviewByCrewId(@Param("crewId") int crewId);
+
 
     Optional<CrewDto> findCrewById(@Param("crewId") int crewId);
     List<CrewUserDto> findUsersByCrewId(@Param("crewId") int crewId);

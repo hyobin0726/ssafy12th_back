@@ -77,6 +77,7 @@
         ri.image_url AS image_url  <!-- image_url 별칭 추가 -->
         FROM review r
         LEFT JOIN review_image ri ON r.review_id = ri.review_id
+        WHERE visibility = 0
         ORDER BY r.review_id DESC
     </select>
 

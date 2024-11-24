@@ -30,6 +30,24 @@
         FROM crew
         WHERE crew_id = #{crewId}
     </select>
+    <!-- 모임 리뷰 해시태그 삭제 -->
+    <delete id="deleteReviewHashtagsByCrewId" parameterType="int">
+        DELETE rh
+        FROM review_hashtag rh
+        JOIN review r ON rh.review_id = r.review_id
+        WHERE r.visibility = #{crewId};
+    </delete>
+    <!-- review_image 삭제 -->
+    <delete id="deleteReviewImagesByCrewId" parameterType="int">
+        DELETE ri
+        FROM review_image ri
+        JOIN review r ON ri.review_id = r.review_id
+        WHERE r.visibility = #{crewId};
+    </delete>
+    <!-- 크루 삭제 시 리뷰 삭제 -->
+    <delete id="deleteReviewByCrewId" parameterType="int">
+        DELETE FROM review WHERE visibility = #{crewId};
+    </delete>
 
     <!-- 특정 모임에 속한 유저 정보 조회 -->
     <select id="findUsersByCrewId" parameterType="int" resultType="com.trip.enjoy_trip.dto.CrewUserDto">

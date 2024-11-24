@@ -28,11 +28,15 @@ public class CrewServiceImpl implements CrewService {
 
         return crewDto.getCrewId();
     }
+    @Transactional
     @Override
     public void deleteCrew(int crewId) {
         // 삭제 수행
         crewRepository.deleteCrewUsersByCrewId(crewId); // 관련된 모든 사용자 삭제
-        crewRepository.deleteCrewById(crewId);         // 크루 삭제
+        crewRepository.deleteCrewById(crewId);// 크루 삭제
+        crewRepository.deleteReviewHashtagsByCrewId(crewId);
+        crewRepository.deleteReviewImagesByCrewId(crewId);
+        crewRepository.deleteReviewByCrewId(crewId);
     }
     @Override
     public CrewDto getCrewById(int crewId) {
