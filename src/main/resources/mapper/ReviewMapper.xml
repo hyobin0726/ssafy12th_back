@@ -224,45 +224,46 @@
 
 <!--    마이페이지 작성한 리뷰 조회 & 북마크한 리뷰 조회-->
     <!-- 사용자가 작성한 리뷰 조회 -->
-    <select id="findReviewsByUserId" resultType="com.trip.enjoy_trip.dto.ReviewDto">
+    <select id="findReviewsByUserId" resultMap="ReviewWithImagesResultMap">
         SELECT
-            r.review_id AS reviewId,
-            r.content AS content,
-            r.point AS point,
-            r.visibility AS visibility,
-            r.user_id AS userId,
-            r.attraction_id AS attractionId,
-            r.title AS title,
-            r.created_at AS createdAt,
-            (SELECT GROUP_CONCAT(h.name)
-             FROM review_hashtag rh
-                      JOIN hashtag h ON rh.hashtag_id = h.hashtag_id
-             WHERE rh.review_id = r.review_id) AS hashtags
+        r.review_id AS review_id,
+        r.content,
+        r.point,
+        r.visibility,
+        r.user_id,
+        r.attraction_id,
+        r.gugun_id,
+        r.gugun_sido_id,
+        r.title,
+        r.created_at,
+        ri.image_url
         FROM review r
+        LEFT JOIN review_image ri ON r.review_id = ri.review_id
         WHERE r.user_id = #{userId}
         ORDER BY r.created_at DESC
     </select>
 
     <!-- 사용자가 북마크한 리뷰 조회 -->
-    <select id="findBookmarkedReviewsByUserId" resultType="com.trip.enjoy_trip.dto.ReviewDto">
+    <select id="findBookmarkedReviewsByUserId" resultMap="ReviewWithImagesResultMap">
         SELECT
-            r.review_id AS reviewId,
-            r.content AS content,
-            r.point AS point,
-            r.visibility AS visibility,
-            r.user_id AS userId,
-            r.attraction_id AS attractionId,
-            r.title AS title,
-            r.created_at AS createdAt,
-            (SELECT GROUP_CONCAT(h.name)
-             FROM review_hashtag rh
-                      JOIN hashtag h ON rh.hashtag_id = h.hashtag_id
-             WHERE rh.review_id = r.review_id) AS hashtags
+        r.review_id AS review_id,
+        r.content,
+        r.point,
+        r.visibility,
+        r.user_id,
+        r.attraction_id,
+        r.gugun_id,
+        r.gugun_sido_id,
+        r.title,
+        r.created_at,
+        ri.image_url
         FROM review r
-                 INNER JOIN bookmark b ON r.review_id = b.review_id
+        INNER JOIN bookmark b ON r.review_id = b.review_id
+        LEFT JOIN review_image ri ON r.review_id = ri.review_id
         WHERE b.user_id = #{userId}
         ORDER BY b.bookmark_date DESC
     </select>
+
     <!-- 해당 크루 리뷰 조회 -->
      <select id="findReviewsByCrewId" parameterType="int" resultMap="ReviewWithImagesResultMap">
          SELECT DISTINCT
